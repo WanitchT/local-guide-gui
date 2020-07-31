@@ -1,8 +1,10 @@
 import React from 'react';
+import axios from 'axios';
 import '../App.css';
 import { Modal, Button, Input, Row, Col, Layout, Menu } from 'antd';
 import 'antd/dist/antd.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { convertLegacyProps } from 'antd/lib/button/button';
 
 class Login extends React.Component {
   constructor(props) {
@@ -28,6 +30,29 @@ class Login extends React.Component {
     });
   };
 
+  handleSubmit = event => {
+    event.preventDefault();
+
+    const user = {
+      txtUsername: this.state.txtUsername,
+      txtPassword: this.state.txtPassword,
+    };
+    console.log(user)
+
+    axios.post(`http://0.0.0.0:8448`, { user })
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+
+    axios.get(`http://0.0.0.0:8447`, { user })
+    .then(res => {
+      console.log(res);
+      console.log(res.data);
+    })
+  }
+
+
   render() {
     return (
       <div className="App">
@@ -44,28 +69,29 @@ class Login extends React.Component {
           }}></Input>
           <br />
           <p>PASSWORD</p>
-          <Input style={{ width: '25%', borderRadius: 50 }} value={this.state.txtPassword} onChange={(e) => {
+          <Input.Password style={{ width: '25%', borderRadius: 50 }} value={this.state.txtPassword} onChange={(e) => {
               this.setState({
                 txtPassword: e.target.value
               })
-          }}></Input>
+          }}></Input.Password>
           <br />
           <div>
-            <Button type="primary" style= {{ borderRadius: 50 }} onClick={this.showModal}>SIGNUP</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button type="primary" shape="round" size="large"><Link to="/singup">SIGNUP</Link></Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button shape="round" size="large" onClick={this.handleSubmit}>Login</Button>
             <Modal
-              title="SELECT SIGNUP"
+              title="SELECT"
               visible={this.state.visible}
               onCancel={this.handleCancel}
               footer={[
                 <Button key="back" hidden>Return</Button>,
-                <Button key="submit" type="primary" onClick={this.handleCancel}>Close</Button>,
+                <Button key="submit" type="primary" onClick={this.handleCancel} shape="round" size="large" danger>Close</Button>,
               ]}
             >
-              <Button block style= {{ borderRadius: 50 }}><Link to="/signupUser">SIGNUP USER</Link></Button>
+              <Button block shape="round" size="large"><Link to="/userPage">USER</Link></Button>
               <br /><br />
-              <Button block style= {{ borderRadius: 50 }}><Link to="/signupGuide">SIGNUP GUIDE</Link></Button>
+              <Button block shape="round" size="large"><Link to="/signupGuide">GUIDE</Link></Button>
             </Modal>
-            <Button style= {{ borderRadius: 50 }}>Login</Button>
+            <br />
           </div>
         </div>
       </div>

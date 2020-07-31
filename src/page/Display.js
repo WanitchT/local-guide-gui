@@ -20,7 +20,8 @@ class Display extends React.Component {
           <img src={this.state.logo} width="500px" alt="Logo" />
           <img src={this.state.display} width="500px" alt="Display" />
           <br />
-          <div><Button block style= {{ borderRadius: 50 }}><Link to="/login">Website</Link></Button></div>
+          <div><Button shape="round" size="large"><Link to="/login">Website</Link></Button></div>
+          <br />
         </div>
       </div>
     )
