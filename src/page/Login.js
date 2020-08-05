@@ -12,44 +12,85 @@ class Login extends React.Component {
     this.state = {
       logo: "./display.svg",
       display: "./display.jpg",
-      txtUsername: "",
-      txtPassword: ""
+      txtUsername: "wan.te@baac.or.th",
+      txtPassword: "12345678"
     }
   }
-  
-  showModal = () => {
+
+  showModalSuccess = () => {
     this.setState({
-      visible: true,
+      visiblesuccess: true,
+    });
+  };
+
+  showModalAlert = () => {
+    this.setState({
+      visiblealert: true,
     });
   };
 
   handleCancel = e => {
     console.log(e);
     this.setState({
-      visible: false,
+      visiblesuccess: false,
+      visiblealert: false,
     });
   };
 
   handleSubmit = event => {
     event.preventDefault();
 
-    const user = {
-      txtUsername: this.state.txtUsername,
-      txtPassword: this.state.txtPassword,
+    // const user = {
+    //   txtUsername: this.state.txtUsername,
+    //   txtPassword: this.state.txtPassword,
+    // };
+    // console.log(user)
+
+    //axios.post(`http://localhost:8448/`, { user })
+    // axios.post(`http://baac.topwork.asia:8445/api/user/signin`, { user }, 
+    //   {headers: {
+    //     'Content-Type': 'application/json',
+    //   }})
+    //   .then(res => {
+    //     console.log(res);
+    //     console.log(res.data);
+    //     if (res.data.message == "success") {
+    //       this.showModalSuccess();
+    //     } else {
+    //       this.showModalAlert();
+    //     }
+    //   }
+    // )
+
+    var axios = require('axios');
+    var data = JSON.stringify({"txtUsername": this.state.txtUsername,"txtPassword":this.state.txtPassword});
+    console.log(data)
+
+    var config = {
+      method: 'post',
+      url: 'https://fighto-api.topwork.asia/api/user/signin',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data,
+      reponseType: { 
+        'Content-Type': 'application/json'
+      }
     };
-    console.log(user)
 
-    axios.post(`http://0.0.0.0:8448`, { user })
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      })
-
-    axios.get(`http://0.0.0.0:8447`, { user })
+    axios(config)
     .then(res => {
-      console.log(res);
-      console.log(res.data);
+      console.log(JSON.stringify(res.data));
+      if (res.data.success == true) {
+        this.showModalSuccess();
+      } else {
+        this.showModalAlert();
+      }
     })
+    .catch(error =>{
+      console.log(error);
+      this.showModalAlert();
+    });
   }
 
 
@@ -80,7 +121,7 @@ class Login extends React.Component {
             <Button shape="round" size="large" onClick={this.handleSubmit}>Login</Button>
             <Modal
               title="SELECT"
-              visible={this.state.visible}
+              visible={this.state.visiblesuccess}
               onCancel={this.handleCancel}
               footer={[
                 <Button key="back" hidden>Return</Button>,
@@ -90,6 +131,17 @@ class Login extends React.Component {
               <Button block shape="round" size="large"><Link to="/userPage">USER</Link></Button>
               <br /><br />
               <Button block shape="round" size="large"><Link to="/signupGuide">GUIDE</Link></Button>
+            </Modal>
+            <Modal
+              title="Alert"
+              visible={this.state.visiblealert}
+              onCancel={this.handleCancel}
+              footer={[
+                <Button key="back" hidden>Return</Button>,
+                <Button key="submit" type="primary" onClick={this.handleCancel} shape="round" size="large" danger>Close</Button>,
+              ]}
+            >
+              <p>Username or Password incorrect!!!</p>
             </Modal>
             <br />
           </div>
