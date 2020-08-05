@@ -12,7 +12,7 @@ class Login extends React.Component {
     this.state = {
       logo: "./display.svg",
       display: "./display.jpg",
-      txtUsername: "wan.te@baac.or.th",
+      txtUsername: "Tony@baac.or.th",
       txtPassword: "12345678"
     }
   }
@@ -40,30 +40,8 @@ class Login extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    // const user = {
-    //   txtUsername: this.state.txtUsername,
-    //   txtPassword: this.state.txtPassword,
-    // };
-    // console.log(user)
-
-    //axios.post(`http://localhost:8448/`, { user })
-    // axios.post(`http://baac.topwork.asia:8445/api/user/signin`, { user }, 
-    //   {headers: {
-    //     'Content-Type': 'application/json',
-    //   }})
-    //   .then(res => {
-    //     console.log(res);
-    //     console.log(res.data);
-    //     if (res.data.message == "success") {
-    //       this.showModalSuccess();
-    //     } else {
-    //       this.showModalAlert();
-    //     }
-    //   }
-    // )
-
     var axios = require('axios');
-    var data = JSON.stringify({"txtUsername": this.state.txtUsername,"txtPassword":this.state.txtPassword});
+    var data = JSON.stringify({"email": this.state.txtUsername,"password":this.state.txtPassword});
     console.log(data)
 
     var config = {
@@ -92,7 +70,6 @@ class Login extends React.Component {
       this.showModalAlert();
     });
   }
-
 
   render() {
     return (
