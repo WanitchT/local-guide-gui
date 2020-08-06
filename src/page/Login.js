@@ -60,6 +60,8 @@ class Login extends React.Component {
     .then(res => {
       console.log(JSON.stringify(res.data));
       if (res.data.success == true) {
+        localStorage.setItem('emailInLocalStorage', this.state.txtUsername);
+        localStorage.setItem('idTokenInLocalStorage', res.data.token);
         this.showModalSuccess();
       } else {
         this.showModalAlert();
