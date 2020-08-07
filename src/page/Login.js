@@ -48,7 +48,10 @@ class Login extends React.Component {
       method: 'post',
       url: 'https://fighto-api.topwork.asia/api/user/signin',
       headers: { 
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With'
       },
       data : data,
       reponseType: { 
@@ -61,6 +64,7 @@ class Login extends React.Component {
       console.log(JSON.stringify(res.data));
       if (res.data.success == true) {
         localStorage.setItem('emailInLocalStorage', this.state.txtUsername);
+        localStorage.setItem('idUserInLocalStorage', res.data.id);
         localStorage.setItem('idTokenInLocalStorage', res.data.token);
         this.showModalSuccess();
       } else {

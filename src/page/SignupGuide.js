@@ -92,16 +92,22 @@ class SignupGuide extends React.Component {
 
     var config = {
       method: 'put',
-      url: 'https://fighto-api.topwork.asia/api/guide/1',
+      url: 'https://fighto-api.topwork.asia/api/guide/'+localStorage.getItem('idUserInLocalStorage'),
       headers: { 
-        'Content-Type': 'application/json'
+        'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With'
       },
       data : data,
       reponseType: { 
         'Content-Type': 'application/json'
       }
     };
-
+    console.log(config.url)
+    console.log(config.headers)
+    
     axios(config)
     .then(res => {
       console.log(JSON.stringify(res.data));
@@ -253,9 +259,9 @@ class SignupGuide extends React.Component {
                   <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="PROVINCE"></Input>
                 </Col>
                 <Col span={19}>
-                  <Select placeholder="Select.." style={{ width: '90%' }} value={this.state.txtLocation} onChange={(e) => {
+                  <Select placeholder="Select.." style={{ width: '90%' }} value={this.state.txtProvince} onChange={(e) => {
                     this.setState({
-                      txtLocation: e
+                      txtProvince: e
                     })
                   }}>
                     <Option value="กรุงเทพมหานคร">กรุงเทพมหานคร</Option>
