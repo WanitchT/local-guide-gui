@@ -32,7 +32,7 @@ class SignupGuide extends React.Component {
       logo: "./display.svg",
       display: "./display.jpg",
       loading: false,
-      txtEmail: "",
+      txtEmail: localStorage.getItem('emailInLocalStorage'),
       txtFirstName: "",
       txtLastName: "",
       txtDisplayname: "",
@@ -42,7 +42,8 @@ class SignupGuide extends React.Component {
       txtTelephone: "",
       txtEducation: "",
       txtCertificate: "",
-      txtLocation: ""
+      txtLocation: "",
+      imageUrl: ""
     };
   };
 
@@ -73,21 +74,40 @@ class SignupGuide extends React.Component {
     });
 
     var axios = require('axios');
-    var data = JSON.stringify({"email": this.state.txtUsername, "password":this.state.txtPassword, "firstname": this.state.txtFirstName, "lastname":this.state.txtLastName});
+    var data = JSON.stringify({
+      "email": this.state.txtEmail,
+      "firstname": this.state.txtFirstName,
+      "lastname": this.state.txtLastName,
+      "displayname": this.state.txtDisplayname,
+      "gender": this.state.txtGender,
+      "address": this.state.txtAddress,
+      "province": this.state.txtProvince,
+      "telephone": this.state.txtTelephone,
+      "education": this.state.txtEducation,
+      "certificate": this.state.txtCertificate,
+      "location": this.state.txtLocation,
+      "profilepicture": this.state.imageUrl
+    });
     console.log(data)
 
     var config = {
-      method: 'post',
-      url: 'https://fighto-api.topwork.asia/api/user/signup',
+      method: 'put',
+      url: 'https://fighto-api.topwork.asia/api/guide/'+localStorage.getItem('idUserInLocalStorage'),
       headers: { 
-        'Content-Type': 'application/json'
+        'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With'
       },
       data : data,
       reponseType: { 
         'Content-Type': 'application/json'
       }
     };
-
+    console.log(config.url)
+    console.log(config.headers)
+    
     axios(config)
     .then(res => {
       console.log(JSON.stringify(res.data));
@@ -104,6 +124,7 @@ class SignupGuide extends React.Component {
   };
 
   handleChange = info => {
+    
     if (info.file.status === 'uploading') {
       this.setState({ loading: true });
       return;
@@ -111,10 +132,12 @@ class SignupGuide extends React.Component {
     if (info.file.status === 'done') {
       // Get this url from response in real world.
       getBase64(info.file.originFileObj, imageUrl =>
-        this.setState({
-          imageUrl,
+       {
+        this.setState({...this.state,
+          imageUrl: imageUrl,
           loading: false,
-        }),
+        })
+       },
       );
     }
   };
@@ -126,7 +149,7 @@ class SignupGuide extends React.Component {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
-    const { imageUrl } = this.state;
+    // const { imageUrl } = this.state;
     return (
       <div className="App">
         <div className="App-display-signupguide">
@@ -146,7 +169,7 @@ class SignupGuide extends React.Component {
                       beforeUpload={beforeUpload}
                       onChange={this.handleChange}
                     >
-                      {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: 325 }} /> : uploadButton}
+                      {this.state.imageUrl ? <img src={this.state.imageUrl} alt="avatar" style={{ width: 330 }} /> : uploadButton}
                     </Upload>
                   </Card>
                 </Col>
@@ -157,17 +180,23 @@ class SignupGuide extends React.Component {
               <br />
               <p>PROFILE GUIDE</p>
               <Row>
-                <Col span={24} style={{ height: "35px" }}>
-                  <Input style={{ width: '90%' }} addonBefore="E-MAIL" value={this.state.txtEmail} onChange={(e) => {
+                <Col span={5} style={{ height: "40px" }}>
+                  <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="E-MAIL"></Input>
+                </Col>
+                <Col span={19}>
+                  <Input style={{ width: '90%', borderRadius: 50 }} value={this.state.txtEmail} onChange={(e) => {
                     this.setState({
                       txtEmail: e.target.value
                     })
-                  }}></Input>
+                  }} disabled></Input>
                 </Col>
               </Row>
               <Row>
-                <Col span={24} style={{ height: "35px" }}>
-                  <Input style={{ width: '90%' }} addonBefore="FIRST NAME" value={this.state.txtFirstName} onChange={(e) => {
+                <Col span={5} style={{ height: "40px" }}>
+                  <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="FIRST NAME"></Input>
+                </Col>
+                <Col span={19}>
+                  <Input style={{ width: '90%', borderRadius: 50 }} value={this.state.txtFirstName} onChange={(e) => {
                     this.setState({
                       txtFirstName: e.target.value
                     })
@@ -175,8 +204,11 @@ class SignupGuide extends React.Component {
                 </Col>
               </Row>
               <Row>
-                <Col span={24} style={{ height: "35px" }}>
-                  <Input style={{ width: '90%' }} addonBefore="LAST NAME" value={this.state.txtLastName} onChange={(e) => {
+                <Col span={5} style={{ height: "40px" }}>
+                  <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="LAST NAME"></Input>
+                </Col>
+                <Col span={19}>
+                  <Input style={{ width: '90%', borderRadius: 50 }} value={this.state.txtLastName} onChange={(e) => {
                     this.setState({
                       txtLastName: e.target.value
                     })
@@ -184,8 +216,11 @@ class SignupGuide extends React.Component {
                 </Col>
               </Row>
               <Row>
-                <Col span={24} style={{ height: "35px" }}>
-                  <Input style={{ width: '90%' }} addonBefore="DISPLAY NAME" value={this.state.txtDisplayname} onChange={(e) => {
+                <Col span={5} style={{ height: "40px" }}>
+                  <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="DISPLAY NAME"></Input>
+                </Col>
+                <Col span={19}>
+                  <Input style={{ width: '90%', borderRadius: 50 }} value={this.state.txtDisplayname} onChange={(e) => {
                     this.setState({
                       txtDisplayname: e.target.value
                     })
@@ -193,23 +228,26 @@ class SignupGuide extends React.Component {
                 </Col>
               </Row>
               <Row>
-                <Col span={24} style={{ height: "35px" }}>
-                  <Input.Group compact>
-                    <Input style={{ width: '12%' }} value="GENDER"></Input>
-                    <Select placeholder="Select.." style={{ width: '78%' }} value={this.state.txtGender} onChange={(e) => {
-                      this.setState({
-                        txtGender: e
-                      })
-                    }}>
-                      <Option value="ชาย">ชาย</Option>
-                      <Option value="หญิง">หญิง</Option>
-                    </Select>
-                  </Input.Group>
+                <Col span={5} style={{ height: "40px" }}>
+                  <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="GENDER"></Input>
+                </Col>
+                <Col span={19}>
+                  <Select placeholder="Select.." style={{ width: '90%' }} value={this.state.txtGender} onChange={(e) => {
+                    this.setState({
+                      txtGender: e
+                    })
+                  }}>
+                    <Option value="ชาย">ชาย</Option>
+                    <Option value="หญิง">หญิง</Option>
+                  </Select>
                 </Col>
               </Row>
               <Row>
-                <Col span={24} style={{ height: "35px" }}>
-                  <Input style={{ width: '90%' }} addonBefore="ADDRESS" value={this.state.txtAddress} onChange={(e) => {
+                <Col span={5} style={{ height: "40px" }}>
+                  <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="ADDRESS"></Input>
+                </Col>
+                <Col span={19}>
+                  <Input style={{ width: '90%', borderRadius: 50 }} value={this.state.txtAddress} onChange={(e) => {
                     this.setState({
                       txtAddress: e.target.value
                     })
@@ -217,98 +255,101 @@ class SignupGuide extends React.Component {
                 </Col>
               </Row>
               <Row>
-                <Col span={24} style={{ height: "35px" }}>
-                  <Input.Group compact>
-                    <Input style={{ width: '15%' }} value="PROVINCE"></Input>
-                    <Select placeholder="Select.." style={{ width: '75%' }} value={this.state.txtLocation} onChange={(e) => {
-                      this.setState({
-                        txtLocation: e
-                      })
-                    }}>
-                      <Option value="กรุงเทพมหานคร">กรุงเทพมหานคร</Option>
-                      <Option value="กระบี่">กระบี่</Option>
-                      <Option value="กาญจนบุรี">กาญจนบุรี</Option>
-                      <Option value="กาฬสินธุ์">กาฬสินธุ์</Option>
-                      <Option value="กำแพงเพชร">กำแพงเพชร</Option>
-                      <Option value="ขอนแก่น">ขอนแก่น</Option>
-                      <Option value="จันทบุรี">จันทบุรี</Option>
-                      <Option value="ฉะเชิงเทรา">ฉะเชิงเทรา</Option>
-                      <Option value="ชัยนาท">ชัยนาท</Option>
-                      <Option value="ชัยภูมิ">ชัยภูมิ</Option>
-                      <Option value="ชุมพร">ชุมพร</Option>
-                      <Option value="ชลบุรี">ชลบุรี</Option>
-                      <Option value="เชียงใหม่">เชียงใหม่</Option>
-                      <Option value="เชียงราย">เชียงราย</Option>
-                      <Option value="ตรัง">ตรัง</Option>
-                      <Option value="ตราด">ตราด</Option>
-                      <Option value="ตาก">ตาก</Option>
-                      <Option value="นครนายก">นครนายก</Option>
-                      <Option value="นครปฐม">นครปฐม</Option>
-                      <Option value="นครพนม">นครพนม</Option>
-                      <Option value="นครราชสีมา">นครราชสีมา</Option>
-                      <Option value="นครศรีธรรมราช">นครศรีธรรมราช</Option>
-                      <Option value="นครสวรรค์">นครสวรรค์</Option>
-                      <Option value="นราธิวาส">นราธิวาส</Option>
-                      <Option value="น่าน">น่าน</Option>
-                      <Option value="นนทบุรี">นนทบุรี</Option>
-                      <Option value="บึงกาฬ">บึงกาฬ</Option>
-                      <Option value="บุรีรัมย์">บุรีรัมย์</Option>
-                      <Option value="ประจวบคีรีขันธ์">ประจวบคีรีขันธ์</Option>
-                      <Option value="ปทุมธานี">ปทุมธานี</Option>
-                      <Option value="ปราจีนบุรี">ปราจีนบุรี</Option>
-                      <Option value="ปัตตานี">ปัตตานี</Option>
-                      <Option value="พะเยา">พะเยา</Option>
-                      <Option value="พระนครศรีอยุธยา">พระนครศรีอยุธยา</Option>
-                      <Option value="พังงา">พังงา</Option>
-                      <Option value="พิจิตร">พิจิตร</Option>
-                      <Option value="พิษณุโลก">พิษณุโลก</Option>
-                      <Option value="เพชรบุรี">เพชรบุรี</Option>
-                      <Option value="เพชรบูรณ์">เพชรบูรณ์</Option>
-                      <Option value="แพร่">แพร่</Option>
-                      <Option value="พัทลุง">พัทลุง</Option>
-                      <Option value="ภูเก็ต">ภูเก็ต</Option>
-                      <Option value="มหาสารคาม">มหาสารคาม</Option>
-                      <Option value="มุกดาหาร">มุกดาหาร</Option>
-                      <Option value="แม่ฮ่องสอน">แม่ฮ่องสอน</Option>
-                      <Option value="ยโสธร">ยโสธร</Option>
-                      <Option value="ยะลา">ยะลา</Option>
-                      <Option value="ร้อยเอ็ด">ร้อยเอ็ด</Option>
-                      <Option value="ระนอง">ระนอง</Option>
-                      <Option value="ระยอง">ระยอง</Option>
-                      <Option value="ราชบุรี">ราชบุรี</Option>
-                      <Option value="ลพบุรี">ลพบุรี</Option>
-                      <Option value="ลำปาง">ลำปาง</Option>
-                      <Option value="ลำพูน">ลำพูน</Option>
-                      <Option value="เลย">เลย</Option>
-                      <Option value="ศรีสะเกษ">ศรีสะเกษ</Option>
-                      <Option value="สกลนคร">สกลนคร</Option>
-                      <Option value="สงขลา">สงขลา</Option>
-                      <Option value="สมุทรสาคร">สมุทรสาคร</Option>
-                      <Option value="สมุทรปราการ">สมุทรปราการ</Option>
-                      <Option value="สมุทรสงคราม">สมุทรสงคราม</Option>
-                      <Option value="สระแก้ว">สระแก้ว</Option>
-                      <Option value="สระบุรี">สระบุรี</Option>
-                      <Option value="สิงห์บุรี">สิงห์บุรี</Option>
-                      <Option value="สุโขทัย">สุโขทัย</Option>
-                      <Option value="สุพรรณบุรี">สุพรรณบุรี</Option>
-                      <Option value="สุราษฎร์ธานี">สุราษฎร์ธานี</Option>
-                      <Option value="สุรินทร์">สุรินทร์</Option>
-                      <Option value="สตูล">สตูล</Option>
-                      <Option value="หนองคาย">หนองคาย</Option>
-                      <Option value="หนองบัวลำภู">หนองบัวลำภู</Option>
-                      <Option value="อำนาจเจริญ">อำนาจเจริญ</Option>
-                      <Option value="อุดรธานี">อุดรธานี</Option>
-                      <Option value="อุตรดิตถ์">อุตรดิตถ์</Option>
-                      <Option value="อุทัยธานี">อุทัยธานี</Option>
-                      <Option value="อุบลราชธานี">อุบลราชธานี</Option>
-                      <Option value="อ่างทอง">อ่างทอง</Option>
-                    </Select>
-                  </Input.Group>
+                <Col span={5} style={{ height: "40px" }}>
+                  <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="PROVINCE"></Input>
+                </Col>
+                <Col span={19}>
+                  <Select placeholder="Select.." style={{ width: '90%' }} value={this.state.txtProvince} onChange={(e) => {
+                    this.setState({
+                      txtProvince: e
+                    })
+                  }}>
+                    <Option value="กรุงเทพมหานคร">กรุงเทพมหานคร</Option>
+                    <Option value="กระบี่">กระบี่</Option>
+                    <Option value="กาญจนบุรี">กาญจนบุรี</Option>
+                    <Option value="กาฬสินธุ์">กาฬสินธุ์</Option>
+                    <Option value="กำแพงเพชร">กำแพงเพชร</Option>
+                    <Option value="ขอนแก่น">ขอนแก่น</Option>
+                    <Option value="จันทบุรี">จันทบุรี</Option>
+                    <Option value="ฉะเชิงเทรา">ฉะเชิงเทรา</Option>
+                    <Option value="ชัยนาท">ชัยนาท</Option>
+                    <Option value="ชัยภูมิ">ชัยภูมิ</Option>
+                    <Option value="ชุมพร">ชุมพร</Option>
+                    <Option value="ชลบุรี">ชลบุรี</Option>
+                    <Option value="เชียงใหม่">เชียงใหม่</Option>
+                    <Option value="เชียงราย">เชียงราย</Option>
+                    <Option value="ตรัง">ตรัง</Option>
+                    <Option value="ตราด">ตราด</Option>
+                    <Option value="ตาก">ตาก</Option>
+                    <Option value="นครนายก">นครนายก</Option>
+                    <Option value="นครปฐม">นครปฐม</Option>
+                    <Option value="นครพนม">นครพนม</Option>
+                    <Option value="นครราชสีมา">นครราชสีมา</Option>
+                    <Option value="นครศรีธรรมราช">นครศรีธรรมราช</Option>
+                    <Option value="นครสวรรค์">นครสวรรค์</Option>
+                    <Option value="นราธิวาส">นราธิวาส</Option>
+                    <Option value="น่าน">น่าน</Option>
+                    <Option value="นนทบุรี">นนทบุรี</Option>
+                    <Option value="บึงกาฬ">บึงกาฬ</Option>
+                    <Option value="บุรีรัมย์">บุรีรัมย์</Option>
+                    <Option value="ประจวบคีรีขันธ์">ประจวบคีรีขันธ์</Option>
+                    <Option value="ปทุมธานี">ปทุมธานี</Option>
+                    <Option value="ปราจีนบุรี">ปราจีนบุรี</Option>
+                    <Option value="ปัตตานี">ปัตตานี</Option>
+                    <Option value="พะเยา">พะเยา</Option>
+                    <Option value="พระนครศรีอยุธยา">พระนครศรีอยุธยา</Option>
+                    <Option value="พังงา">พังงา</Option>
+                    <Option value="พิจิตร">พิจิตร</Option>
+                    <Option value="พิษณุโลก">พิษณุโลก</Option>
+                    <Option value="เพชรบุรี">เพชรบุรี</Option>
+                    <Option value="เพชรบูรณ์">เพชรบูรณ์</Option>
+                    <Option value="แพร่">แพร่</Option>
+                    <Option value="พัทลุง">พัทลุง</Option>
+                    <Option value="ภูเก็ต">ภูเก็ต</Option>
+                    <Option value="มหาสารคาม">มหาสารคาม</Option>
+                    <Option value="มุกดาหาร">มุกดาหาร</Option>
+                    <Option value="แม่ฮ่องสอน">แม่ฮ่องสอน</Option>
+                    <Option value="ยโสธร">ยโสธร</Option>
+                    <Option value="ยะลา">ยะลา</Option>
+                    <Option value="ร้อยเอ็ด">ร้อยเอ็ด</Option>
+                    <Option value="ระนอง">ระนอง</Option>
+                    <Option value="ระยอง">ระยอง</Option>
+                    <Option value="ราชบุรี">ราชบุรี</Option>
+                    <Option value="ลพบุรี">ลพบุรี</Option>
+                    <Option value="ลำปาง">ลำปาง</Option>
+                    <Option value="ลำพูน">ลำพูน</Option>
+                    <Option value="เลย">เลย</Option>
+                    <Option value="ศรีสะเกษ">ศรีสะเกษ</Option>
+                    <Option value="สกลนคร">สกลนคร</Option>
+                    <Option value="สงขลา">สงขลา</Option>
+                    <Option value="สมุทรสาคร">สมุทรสาคร</Option>
+                    <Option value="สมุทรปราการ">สมุทรปราการ</Option>
+                    <Option value="สมุทรสงคราม">สมุทรสงคราม</Option>
+                    <Option value="สระแก้ว">สระแก้ว</Option>
+                    <Option value="สระบุรี">สระบุรี</Option>
+                    <Option value="สิงห์บุรี">สิงห์บุรี</Option>
+                    <Option value="สุโขทัย">สุโขทัย</Option>
+                    <Option value="สุพรรณบุรี">สุพรรณบุรี</Option>
+                    <Option value="สุราษฎร์ธานี">สุราษฎร์ธานี</Option>
+                    <Option value="สุรินทร์">สุรินทร์</Option>
+                    <Option value="สตูล">สตูล</Option>
+                    <Option value="หนองคาย">หนองคาย</Option>
+                    <Option value="หนองบัวลำภู">หนองบัวลำภู</Option>
+                    <Option value="อำนาจเจริญ">อำนาจเจริญ</Option>
+                    <Option value="อุดรธานี">อุดรธานี</Option>
+                    <Option value="อุตรดิตถ์">อุตรดิตถ์</Option>
+                    <Option value="อุทัยธานี">อุทัยธานี</Option>
+                    <Option value="อุบลราชธานี">อุบลราชธานี</Option>
+                    <Option value="อ่างทอง">อ่างทอง</Option>
+                  </Select>
                 </Col>
               </Row>
               <Row>
-                <Col span={24} style={{ height: "35px" }}>
-                  <Input style={{ width: '90%' }} addonBefore="TELEPHONE" value={this.state.txtTelephone} onChange={(e) => {
+                <Col span={5} style={{ height: "40px" }}>
+                  <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="TELEPHONE"></Input>
+                </Col>
+                <Col span={19}>
+                  <Input style={{ width: '90%', borderRadius: 50 }} value={this.state.txtTelephone} onChange={(e) => {
                     this.setState({
                       txtTelephone: e.target.value
                     })
@@ -316,25 +357,28 @@ class SignupGuide extends React.Component {
                 </Col>
               </Row>
               <Row>
-                <Col span={24} style={{ height: "35px" }}>
-                  <Input.Group compact>
-                    <Input style={{ width: '16%' }} value="EDUCATION"></Input>
-                    <Select placeholder="Select.." style={{ width: '74%' }} value={this.state.txtEducation} onChange={(e) => {
-                      this.setState({
-                        txtEducation: e
-                      })
-                    }}>
-                      <Option value="ปริญญาเอก">ปริญญาเอก</Option>
-                      <Option value="ปริญญาโท">ปริญญาโท</Option>
-                      <Option value="ปริญญาตรี">ปริญญาตรี</Option>
-                      <Option value="ต่ำกว่าปริญญาตรี">ต่ำกว่าปริญญาตรี</Option>
-                    </Select>
-                  </Input.Group>
+                <Col span={5} style={{ height: "40px" }}>
+                  <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="EDUCATION"></Input>
+                </Col>
+                <Col span={19}>
+                  <Select placeholder="Select.." style={{ width: '90%' }} value={this.state.txtEducation} onChange={(e) => {
+                    this.setState({
+                      txtEducation: e
+                    })
+                  }}>
+                    <Option value="ปริญญาเอก">ปริญญาเอก</Option>
+                    <Option value="ปริญญาโท">ปริญญาโท</Option>
+                    <Option value="ปริญญาตรี">ปริญญาตรี</Option>
+                    <Option value="ต่ำกว่าปริญญาตรี">ต่ำกว่าปริญญาตรี</Option>
+                  </Select>
                 </Col>
               </Row>
               <Row>
-                <Col span={24} style={{ height: "35px" }}>
-                  <Input style={{ width: '90%' }} addonBefore="CERTIFICATE" value={this.state.txtCertificate} onChange={(e) => {
+                <Col span={5} style={{ height: "40px" }}>
+                  <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="CERTIFICATE"></Input>
+                </Col>
+                <Col span={19}>
+                  <Input style={{ width: '90%', borderRadius: 50 }} value={this.state.txtCertificate} onChange={(e) => {
                     this.setState({
                       txtCertificate: e.target.value
                     })
@@ -342,8 +386,11 @@ class SignupGuide extends React.Component {
                 </Col>
               </Row>
               <Row>
-                <Col span={24} style={{ height: "35px" }}>
-                  <Input style={{ width: '90%' }} addonBefore="LOCATION" value={this.state.txtLocation} onChange={(e) => {
+                <Col span={5} style={{ height: "40px" }}>
+                  <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center' }} value="LOCATION"></Input>
+                </Col>
+                <Col span={19}>
+                  <Input style={{ width: '90%', borderRadius: 50 }} value={this.state.txtLocation} onChange={(e) => {
                     this.setState({
                       txtLocation: e.target.value
                     })
@@ -354,7 +401,7 @@ class SignupGuide extends React.Component {
                 <Col span={24} style={{ height: "15px" }}></Col>
               </Row>
               <Row>
-                <Col span={1}></Col>
+                <Col span={15}></Col>
                 <Col span={4} style={{ algin: "left" }}><Button shape="round" size="large" danger><Link to="/login">CANCEL</Link></Button></Col>
                 <Col span={4} style={{ algin: "left" }}><Button type="primary" shape="round" size="large" onClick={this.handleSubmit}>SAVE</Button></Col>
               </Row>
