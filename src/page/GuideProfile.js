@@ -53,7 +53,7 @@ class GuideProfile extends React.Component {
                                 <Card bordered={false} cover={
                                     <img
                                         alt="example"
-                                        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                                        src="https://images.pexels.com/photos/3695219/pexels-photo-3695219.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
                                     />
                                 }>
 
@@ -68,7 +68,10 @@ class GuideProfile extends React.Component {
                                         <Descriptions.Item label="Certificate no.">    </Descriptions.Item>
                                         <Descriptions.Item label="Exp">6 years</Descriptions.Item>
                                         <Descriptions.Item label="Location">CM</Descriptions.Item>
-
+                                        <Descriptions.Item label="Plans">
+                                            <Link to="/plandetail">Night market</Link>
+                                            <p>Eating trip</p>
+                                        </Descriptions.Item>
                                     </Descriptions>
 
                                 </Card>

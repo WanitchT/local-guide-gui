@@ -106,7 +106,7 @@ class Review extends React.Component {
                     </div>
                     <br />
                     <div>
-                        <Button shape="round" size="large"><Link to="/userPage">BACK</Link></Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <Button shape="round" size="large"><Link to="/guideprofile">BACK</Link></Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <Button shape="round" size="large" type="primary"><Link to="/userPage">SUBMIT</Link></Button>
 
                     </div>
