@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import { Modal, Button, Input, Row, Col, Layout, Menu,Descriptions  } from 'antd';
+import { Modal, Button, Input, Row, Col, Layout, Menu } from 'antd';
 import 'antd/dist/antd.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -45,33 +45,6 @@ class UserPage extends React.Component {
           <br />
           <p>SEARCH LOCAL GUIDE</p>
           <br />
-          <div>
-      <Descriptions
-        title="Responsive Descriptions"
-        bordered
-        column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
-      >
-        <Descriptions.Item label="Product">Cloud Database</Descriptions.Item>
-        <Descriptions.Item label="Billing">Prepaid</Descriptions.Item>
-        <Descriptions.Item label="time">18:00:00</Descriptions.Item>
-        <Descriptions.Item label="Amount">$80.00</Descriptions.Item>
-        <Descriptions.Item label="Discount">$20.00</Descriptions.Item>
-        <Descriptions.Item label="Official">$60.00</Descriptions.Item>
-        <Descriptions.Item label="Config Info">
-          Data disk type: MongoDB
-          <br />
-          Database version: 3.4
-          <br />
-          Package: dds.mongo.mid
-          <br />
-          Storage space: 10 GB
-          <br />
-          Replication factor: 3
-          <br />
-          Region: East China 1
-        </Descriptions.Item>
-      </Descriptions>
-    </div>
           <p>USER ID</p>
           <Input style={{ width: '25%', borderRadius: 50 }} value={this.state.txtUserID} onChange={(e) => {
               this.setState({

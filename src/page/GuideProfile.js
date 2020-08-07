@@ -58,7 +58,7 @@ class GuideProfile extends React.Component {
                                 }>
 
                                     <Rate disabled defaultValue={2} />
-
+                                    <br />
                                     <Descriptions bordered
                                         column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}>
                                         <Descriptions.Item label="Guide name"></Descriptions.Item>
@@ -77,25 +77,14 @@ class GuideProfile extends React.Component {
 
                         </Row>
                     </div>
-                    {/* 
+                    
                     <br />
                     <div>
-                        <Button shape="round" size="large" danger><Link to="/login">CANCEL</Link></Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button type="primary" shape="round" size="large" onClick={this.showModal}>SAVE</Button>
-                        <Modal
-                            title="SAVE"
-                            visible={this.state.visible}
-                            onOk={this.handleOk}
-                            onCancel={this.handleCancel}
-                            footer={[
-                                <Button key="back" onClick={this.handleCancel} shape="round" size="large" danger>CANCEL</Button>,
-                                <Button key="submit" type="primary" onClick={this.handleOk} shape="round" size="large"><Link to="/login">CONFIRM</Link></Button>,
-                            ]}
-                        >
-                            <p>Do you Want to Save these Data?</p>
-                        </Modal>
+                        <Button shape="round" size="large" danger><Link to="/userPage">BACK</Link></Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <Button shape="round" size="large" danger><Link to="/review">REVIEW</Link></Button>
+
                     </div>
-                    <br /> */}
+                    <br />
                 </div>
             </div>
         )
