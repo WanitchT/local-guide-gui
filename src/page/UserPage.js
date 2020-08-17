@@ -4,8 +4,13 @@ import { Modal, Button, Input, Row, Col, Layout, Menu, Card, Select, Form, Table
 import 'antd/dist/antd.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { SearchOutlined, ProfileOutlined } from '@ant-design/icons';
+import GuideProfile from './GuideProfile';
 
 const { Option } = Select;
+
+function GuideprofileID() {
+  console.log(localStorage.getItem('idUserInLocalStorage'))
+}
 
 const columns = [
   {
@@ -28,7 +33,7 @@ const columns = [
     title: 'Profile',
     key: 'profile',
     fixed: 'center',
-    render: () => <Button type="primary" shape="circle" icon={<ProfileOutlined />}></Button>,
+    render: () => <Link to="/guideProfile"><Button type="primary" shape="circle" icon={<ProfileOutlined />} onClick={GuideprofileID()}></Button></Link>,
   },
 ];
 

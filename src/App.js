@@ -24,7 +24,7 @@ function App() {
           <Route path="/userPage"><UserPage /></Route>
           <Route path="/singup"><Signup /></Route>
           <Route path="/login"><Login /></Route>
-          <Route path="/"><GuideProfile /></Route>
+          <Route path="/"><Display /></Route>
         </Switch>
       </Router>
     </div>

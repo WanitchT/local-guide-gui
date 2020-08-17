@@ -43,9 +43,51 @@ class SignupGuide extends React.Component {
       txtEducation: "",
       txtCertificate: "",
       txtLocation: "",
-      imageUrl: ""
+      imageUrl: "",
     };
   };
+
+  componentDidMount() {
+    var axios = require('axios');
+    var config = {
+        method: 'get',
+        url: 'https://fighto-api.topwork.asia/api/guide/'+localStorage.getItem('idUserInLocalStorage'),
+        headers: { 
+        'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With'
+        },
+        reponseType: { 
+        'Content-Type': 'application/json'
+        }
+    };
+    
+    axios(config)
+    .then(res => {
+        console.log(JSON.stringify(res.data));
+        if (res.data.success == true) {
+          this.setState({
+            ...this.state,
+            txtFirstName: res.data.data.firstname,
+            txtLastName: res.data.data.lastname,
+            txtDisplayname: res.data.data.displayname,
+            txtGender:  res.data.data.gender,
+            txtAddress: res.data.data.address[0],
+            txtProvince: res.data.data.address[1],
+            txtTelephone: res.data.data.telephone,
+            txtEducation: res.data.data.education,
+            txtCertificate: res.data.data.certificate,
+            txtLocation: res.data.data.location,
+            imageUrl: res.data.data.profilepicture,
+          })
+        }
+    })
+    .catch(error =>{
+        console.log(error);
+    });
+  }
 
   showModalSuccess = () => {
     this.setState({
@@ -402,9 +444,22 @@ class SignupGuide extends React.Component {
               </Row>
               <Row>
                 <Col span={15}></Col>
-                <Col span={4} style={{ algin: "left" }}><Button shape="round" size="large" danger><Link to="/login">CANCEL</Link></Button></Col>
+                <Col span={4} style={{ algin: "left" }}><Button shape="round" size="large" danger><Link to="/login">BACK</Link></Button></Col>
                 <Col span={4} style={{ algin: "left" }}><Button type="primary" shape="round" size="large" onClick={this.handleSubmit}>SAVE</Button></Col>
               </Row>
+              <Modal
+                title="SELECT"
+                visible={this.state.visibleselect}
+                onCancel={this.handleCancel}
+                footer={[
+                  <Button key="back" hidden>Return</Button>,
+                  <Button key="submit" type="primary" onClick={this.handleCancel} shape="round" size="large" danger>Close</Button>,
+                ]}
+              >
+                <Button block shape="round" size="large"><Link to="/userPage">USER</Link></Button>
+                <br /><br />
+                <Button block shape="round" size="large"><Link to="/signupGuide">GUIDE</Link></Button>
+              </Modal>
               <Modal
                 title="SUCCESS"
                 visible={this.state.visiblesuccess}

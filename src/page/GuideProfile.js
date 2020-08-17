@@ -10,12 +10,62 @@ class GuideProfile extends React.Component {
         this.state = {
             logo: "./display.svg",
             display: "./display.jpg",
-            txtUserID: "",
-            txtUserPassword: "",
+            loading: false,
+            txtEmail: "",
             txtFirstName: "",
             txtLastName: "",
-            txtEmail: ""
+            txtDisplayname: "",
+            txtGender: "",
+            txtAddress: "",
+            txtProvince: "",
+            txtTelephone: "",
+            txtEducation: "",
+            txtCertificate: "",
+            txtLocation: "",
+            imageUrl: ""
         }
+    }
+
+    componentDidMount() {
+        var axios = require('axios');
+        var config = {
+            method: 'get',
+            url: 'https://fighto-api.topwork.asia/api/guide/'+localStorage.getItem('idUserInLocalStorage'),
+            headers: { 
+            'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With'
+            },
+            reponseType: { 
+            'Content-Type': 'application/json'
+            }
+        };
+        
+        axios(config)
+        .then(res => {
+            console.log(JSON.stringify(res.data));
+            if (res.data.success == true) {
+                this.setState({
+                    ...this.state,
+                    txtFirstName: res.data.data.firstname,
+                    txtLastName: res.data.data.lastname,
+                    txtDisplayname: res.data.data.displayname,
+                    txtGender:  res.data.data.gender,
+                    txtAddress: res.data.data.address[0],
+                    txtProvince: res.data.data.address[1],
+                    txtTelephone: res.data.data.telephone,
+                    txtEducation: res.data.data.education,
+                    txtCertificate: res.data.data.certificate,
+                    txtLocation: res.data.data.location,
+                    imageUrl: res.data.data.profilepicture,
+                })        
+            }
+        })
+        .catch(error =>{
+            console.log(error);
+        });
     }
 
     showModal = () => {
@@ -43,20 +93,13 @@ class GuideProfile extends React.Component {
             <div className="App">
                 <div className="App-display">
                     <br />
-                    <p>GUIDE PROFILE</p>
-                    <br />
-
-                    <div className="site-card-wrapper" style={{ width: '100%' }}>
-                        <Row gutter={24}>
-                            <Col span={6} />
-                            <Col span={12}>
-                                <Card bordered={false} cover={
-                                    <img
-                                        alt="example"
-                                        src="https://images.pexels.com/photos/3695219/pexels-photo-3695219.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                                    />
-                                }>
-
+                    <Card title="GUIDE PROFILE" bordered={false} style={{ width: 500 }}>
+                        <img src={this.state.imageUrl}/>
+                    </Card>
+                    <Card bordered={false} style={{ width: 500 }}>
+                        <div className="site-card-wrapper" style={{ width: '100%' }}>
+                            <Row gutter={24}>
+                                <Col span={24}>
                                     <Rate disabled defaultValue={2} />
                                     <br />
                                     <Descriptions bordered
@@ -73,20 +116,15 @@ class GuideProfile extends React.Component {
                                             <p>Eating trip</p>
                                         </Descriptions.Item>
                                     </Descriptions>
-
-                                </Card>
-                            </Col>
-                            <Col span={4} />
-
-                        </Row>
-                    </div>
-                    
-                    <br />
-                    <div>
-                        <Button shape="round" size="large" danger><Link to="/userPage">BACK</Link></Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <Button shape="round" size="large" danger><Link to="/review">REVIEW</Link></Button>
-
-                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                        <br />
+                        <div>
+                            <Button shape="round" size="large" danger><Link to="/userPage">BACK</Link></Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <Button shape="round" size="large" danger><Link to="/review">REVIEW</Link></Button>
+                        </div>
+                    </Card>
                     <br />
                 </div>
             </div>
