@@ -80,63 +80,73 @@ class Signup extends React.Component {
       <div className="App">
         <div className="App-display">
         <img src={this.state.logo} width="500px" alt="Logo" />
-        <Card title="SIGNUP INFORMATION" bordered={false} style={{ width: 800 }}>
+        <Card title="SIGNUP INFORMATION" bordered={false} style={{ width: 600 }}>
           <Row>
-            <Col span={4}></Col>
-            <Col span={3} style={{ textAlign: "right" }}><h3>E-MAIL</h3></Col>
             <Col span={1}></Col>
-            <Col span={12}>
-              <Input style={{ borderRadius: 50 }} value={this.state.txtUsername} onChange={(e) => {
+            <Col span={5} style={{ height: "50px" }}>
+              <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center', height: "40px" }} value="E-MAIL"></Input>
+            </Col>
+            <Col span={1}></Col>
+            <Col span={16}>
+              <Input style={{ borderRadius: 50, height: "40px" }} value={this.state.txtUsername} onChange={(e) => {
                 this.setState({
                   txtUsername: e.target.value
                 })
               }}></Input>
             </Col>
-          </Row>
-          <Row><Col span={24} style={{ height: "10px" }}></Col></Row>
-          <Row>
-            <Col span={4}></Col>
-            <Col span={3} style={{ textAlign: "right" }}><h3>PASSWORD</h3></Col>
             <Col span={1}></Col>
-            <Col span={12}>
-              <Input.Password style={{ borderRadius: 50 }} value={this.state.txtPassword} onChange={(e) => {
+          </Row>
+          <Row>
+            <Col span={1}></Col>
+            <Col span={5} style={{ height: "50px" }}>
+              <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center', height: "40px" }} value="PASSWORD"></Input>
+            </Col>
+            <Col span={1}></Col>
+            <Col span={16}>
+              <Input.Password style={{ borderRadius: 50, height: "40px" }} value={this.state.txtPassword} onChange={(e) => {
                 this.setState({
                   txtPassword: e.target.value
                 })
               }}></Input.Password>
             </Col>
-          </Row>
-          <Row><Col span={24} style={{ height: "10px" }}></Col></Row>
-          <Row>
-            <Col span={4}></Col>
-            <Col span={3} style={{ textAlign: "right" }}><h3>FIRST NAME</h3></Col>
             <Col span={1}></Col>
-            <Col span={12}>
-              <Input style={{ borderRadius: 50 }} value={this.state.txtFirstName} onChange={(e) => {
+          </Row>
+          <Row>
+            <Col span={1}></Col>
+            <Col span={5} style={{ height: "50px" }}>
+              <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center', height: "40px" }} value="FIRST NAME"></Input>
+            </Col>
+            <Col span={1}></Col>
+            <Col span={16}>
+              <Input style={{ borderRadius: 50, height: "40px" }} value={this.state.txtFirstName} onChange={(e) => {
                 this.setState({
                   txtFirstName: e.target.value
                 })
               }}></Input>
             </Col>
-          </Row>
-          <Row><Col span={24} style={{ height: "10px" }}></Col></Row>
-          <Row>
-            <Col span={4}></Col>
-            <Col span={3} style={{ textAlign: "right" }}><h3>LAST NAME</h3></Col>
             <Col span={1}></Col>
-            <Col span={12}>
-              <Input style={{ borderRadius: 50 }} value={this.state.txtLastName} onChange={(e) => {
+          </Row>
+          <Row>
+            <Col span={1}></Col>
+            <Col span={5} style={{ height: "50px" }}>
+              <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center', height: "40px" }} value="LAST NAME"></Input>
+            </Col>
+            <Col span={1}></Col>
+            <Col span={16}>
+              <Input style={{ borderRadius: 50, height: "40px" }} value={this.state.txtLastName} onChange={(e) => {
                 this.setState({
                   txtLastName: e.target.value
                 })
               }}></Input>
             </Col>
+            <Col span={1}></Col>
           </Row>
           <br />
           <Row>
-            <Col span={8}></Col>
-            <Col span={4} style={{ algin: "left" }}><Button shape="round" size="large" danger><Link to="/login">CANCEL</Link></Button></Col>
-            <Col span={4} style={{ algin: "left" }}><Button type="primary" shape="round" size="large" onClick={this.handleSubmit}>SAVE</Button></Col>
+            <Col span={7}></Col>
+            <Col span={5} style={{ algin: "left" }}><Button shape="round" size="large" danger><Link to="/login">CANCEL</Link></Button></Col>
+            <Col span={5} style={{ algin: "left" }}><Button type="primary" shape="round" size="large" onClick={this.handleSubmit}>SAVE</Button></Col>
+            <Col span={7}></Col>
           </Row>
           <Modal
             title="SUCCESS"
