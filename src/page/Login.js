@@ -12,7 +12,7 @@ class Login extends React.Component {
     this.state = {
       logo: "./display.svg",
       display: "./display.jpg",
-      txtUsername: "wan.te@baac.or.th",
+      txtUsername: "Tony@baac.or.th",
       txtPassword: "12345678"
     }
   }
@@ -40,37 +40,18 @@ class Login extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    // const user = {
-    //   txtUsername: this.state.txtUsername,
-    //   txtPassword: this.state.txtPassword,
-    // };
-    // console.log(user)
-
-    //axios.post(`http://localhost:8448/`, { user })
-    // axios.post(`http://baac.topwork.asia:8445/api/user/signin`, { user }, 
-    //   {headers: {
-    //     'Content-Type': 'application/json',
-    //   }})
-    //   .then(res => {
-    //     console.log(res);
-    //     console.log(res.data);
-    //     if (res.data.message == "success") {
-    //       this.showModalSuccess();
-    //     } else {
-    //       this.showModalAlert();
-    //     }
-    //   }
-    // )
-
     var axios = require('axios');
-    var data = JSON.stringify({"txtUsername": this.state.txtUsername,"txtPassword":this.state.txtPassword});
+    var data = JSON.stringify({"email": this.state.txtUsername,"password":this.state.txtPassword});
     console.log(data)
 
     var config = {
       method: 'post',
       url: 'https://fighto-api.topwork.asia/api/user/signin',
       headers: { 
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With'
       },
       data : data,
       reponseType: { 
@@ -82,6 +63,9 @@ class Login extends React.Component {
     .then(res => {
       console.log(JSON.stringify(res.data));
       if (res.data.success == true) {
+        localStorage.setItem('emailInLocalStorage', this.state.txtUsername);
+        localStorage.setItem('idUserInLocalStorage', res.data.id);
+        localStorage.setItem('idTokenInLocalStorage', res.data.token);
         this.showModalSuccess();
       } else {
         this.showModalAlert();
@@ -92,7 +76,6 @@ class Login extends React.Component {
       this.showModalAlert();
     });
   }
-
 
   render() {
     return (
