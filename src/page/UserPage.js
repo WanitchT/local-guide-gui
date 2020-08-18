@@ -28,8 +28,8 @@ const columns = [
     dataIndex: 'name',
   },
   {
-    title: 'ราคา',
-    dataIndex: 'price',
+    title: 'เบอร์โทรศัพท์',
+    dataIndex: 'tel',
   },
   {
     title: 'Profile',
@@ -44,7 +44,7 @@ const data = [
     num: '1',
     cert: '12345',
     name: 'Tony S',
-    price: '500',
+    tel: '0861234567',
   },
 ];
 
@@ -77,9 +77,49 @@ class UserPage extends React.Component {
     }
   }
 
-  showModalSearch = () => {
+  showModalSuccess = e => {
+    var axios = require('axios');
+    var data = JSON.stringify({
+      "address": this.state.txtProvince,
+    });
+    console.log(data)
+
+    var config = {
+      method: 'post',
+      url: 'https://fighto-api.topwork.asia/api/guide/search',
+      headers: {
+        'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With'
+      },
+      data : data,
+      reponseType: { 
+        'Content-Type': 'application/json'
+      }
+    };
+    console.log(config.url)
+    console.log(config.headers)
+    
+    axios(config)
+    .then(res => {
+      console.log(JSON.stringify(res.data));
+      if (res.data.success == true) {
+        this.showModalSuccess();
+      } else {
+        this.showModalAlert();
+      }
+    })
+    .catch(error =>{
+      console.log(error);
+      this.showModalAlert();
+    });
+  };
+
+  showModalAlert = () => {
     this.setState({
-      visiblesearch: true,
+      visiblealert: true,
     });
   };
 
@@ -92,7 +132,8 @@ class UserPage extends React.Component {
   handleOk = e => {
     console.log(e);
     this.setState({
-      visiblesearch: false,
+      visiblesuccess: false,
+      visiblealert: false,
       visiblegooglemap: false,
     });
   };
@@ -100,7 +141,8 @@ class UserPage extends React.Component {
   handleCancel = e => {
     console.log(e);
     this.setState({
-      visiblesearch: false,
+      visiblesuccess: false,
+      visiblealert: false,
       visiblegooglemap: false,
     });
   };
@@ -118,6 +160,7 @@ class UserPage extends React.Component {
   handleMarkerClick = () => {
     this.setState({ isMarkerShown: false })
     this.delayedShowMarker()
+    console.log(this.props)
   }
 
   render() {
@@ -134,7 +177,11 @@ class UserPage extends React.Component {
                   <Col span={1}></Col>
                   <Col span={12}>
                     <Form.Item>
-                      <Select placeholder="Select..." allowClear>
+                      <Select placeholder="Select.." style={{ width: '100%' }} value={this.state.txtProvince} onChange={(e) => {
+                          this.setState({
+                            txtProvince: e
+                          })
+                        }}>
                         <Option value="กรุงเทพมหานคร">กรุงเทพมหานคร</Option>
                         <Option value="กระบี่">กระบี่</Option>
                         <Option value="กาญจนบุรี">กาญจนบุรี</Option>
@@ -216,10 +263,10 @@ class UserPage extends React.Component {
                     </Form.Item>
                   </Col>
                   <Col span={5}>
-                    <Button type="primary" shape="round" onClick={this.showModalSearch} icon={<SearchOutlined />}>SEARCH</Button>
+                    <Button type="primary" shape="round" onClick={this.showModalSuccess} icon={<SearchOutlined />}>SEARCH</Button>
                     <Modal
-                      title="SEARCH"
-                      visible={this.state.visiblesearch}
+                      title="SUCCESS"
+                      visible={this.state.visiblesuccess}
                       onOk={this.handleOk}
                       onCancel={this.handleCancel}
                       footer={[
@@ -228,6 +275,17 @@ class UserPage extends React.Component {
                       ]}
                     >
                       <p>Search Success...</p>
+                    </Modal>
+                    <Modal
+                      title="Alert"
+                      visible={this.state.visiblealert}
+                      onCancel={this.handleCancel}
+                      footer={[
+                        <Button key="back" hidden>Return</Button>,
+                        <Button key="submit" type="primary" onClick={this.handleCancel} shape="round" size="large" danger>Close</Button>,
+                      ]}
+                    >
+                      <p>Search failed!!!</p>
                     </Modal>
                   </Col>
                 </Row>
