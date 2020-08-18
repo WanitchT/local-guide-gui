@@ -93,7 +93,7 @@ class PlanDetail extends React.Component {
                                     column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}>
                                     <Descriptions.Item label="8:00 am">
                                         <div >                                           
-                                            {this.state.value}<Button onClick={this.changeEditMode}>Edit</Button>
+                                            {this.state.value}  <Button onClick={this.changeEditMode}>Edit</Button>
                                             </div></Descriptions.Item>
                                     <Descriptions.Item label="9:00 am"></Descriptions.Item>
                                     <Descriptions.Item label="10:00 am"></Descriptions.Item>

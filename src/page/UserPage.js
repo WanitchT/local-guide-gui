@@ -28,7 +28,7 @@ const columns = [
     title: 'Profile',
     key: 'profile',
     fixed: 'center',
-    render: () => <Button type="primary" shape="circle" icon={<ProfileOutlined />}></Button>,
+    render: () => <Link to="/guideprofile"><Button type="primary" shape="circle" icon={<ProfileOutlined />}></Button></Link>,
   },
 ];
 
