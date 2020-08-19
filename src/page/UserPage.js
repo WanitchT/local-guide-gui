@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import { Modal, Button, Input, Row, Col, Layout, Menu, Card, Select, Form, Table } from 'antd';
+import { Modal, Button, Input, Row, Col, Layout, Menu, Card, Select, Form, Table, AutoComplete, InputNumber } from 'antd';
 import 'antd/dist/antd.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { SearchOutlined, ProfileOutlined } from '@ant-design/icons';
@@ -9,44 +9,6 @@ import { compose, withProps } from "recompose"
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
 const { Option } = Select;
-
-function GuideprofileID() {
-  console.log(localStorage.getItem('idUserInLocalStorage'))
-}
-
-const columns = [
-  {
-    title: 'ลำดับที่',
-    dataIndex: 'num',
-  },
-  {
-    title: 'ใบอนุญาติเลขที่',
-    dataIndex: 'cert',
-  },
-  {
-    title: 'ชื่อ - นามสกุล',
-    dataIndex: 'name',
-  },
-  {
-    title: 'ราคา',
-    dataIndex: 'price',
-  },
-  {
-    title: 'Profile',
-    key: 'profile',
-    fixed: 'center',
-    render: () => <Link to="/guideProfile"><Button type="primary" shape="circle" icon={<ProfileOutlined />} onClick={GuideprofileID()}></Button></Link>,
-  },
-];
-
-const data = [
-  {
-    num: '1',
-    cert: '12345',
-    name: 'Tony S',
-    price: '500',
-  },
-];
 
 const MyMapComponent = compose(
   withProps({
@@ -74,17 +36,123 @@ class UserPage extends React.Component {
       display: "./display.jpg",
       txtProvince: "",
       isMarkerShown: false,
-    }
-  }
+      columns: [
+        {
+          title: "ลำดับที่",
+          dataIndex: "num",
+        },
+        {
+          title: 'ใบอนุญาติเลขที่',
+          dataIndex: "cert",
+        },
+        {
+          title: "ชื่อ - นามสกุล",
+          dataIndex: "name",
+        },
+        {
+          title: "เบอร์โทรศัพท์",
+          dataIndex: "tel",
+        },
+        {
+          title: "Profile",
+          dataIndex: "profile",
+          key: "profile",
+          render: (dataIndex) => <Link to="/guideProfile"><Button id={dataIndex} type="primary" shape="circle" icon={<ProfileOutlined />} onClick={() => {localStorage.setItem('idGuideInLocalStorage', dataIndex);}}></Button></Link>
+        },
+      ],
+      datasource: [],
+    };
+  };
 
-  showModalSearch = () => {
+  handleSubmit = e => {
+    console.log(e);
     this.setState({
-      visiblesearch: true,
+      visiblesuccess: false,
+      visiblealert: false,
+      visiblegooglemap: false,
+    });
+
+    var axios = require('axios');
+    var data = JSON.stringify({ "address": this.state.txtProvince });
+    console.log(data)
+
+    var config = {
+      method: 'post',
+      url: 'https://fighto-api.topwork.asia/api/guide/search',
+      headers: {
+        'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With'
+      },
+      data : data,
+      reponseType: { 
+        'Content-Type': 'application/json'
+      }
+    };
+    console.log(config.url)
+    console.log(config.headers)
+    
+    axios(config)
+    .then(res => {
+      console.log(JSON.stringify(res.data));
+      if (res.data.success == true) {
+        this.setState({
+          ...this.state,
+          datasource: [],
+        })
+        if (res.data.data == "") {
+          this.setState({
+            ...this.state,
+            datasource: [],
+          })
+        } else {
+          for (let i=0; i < res.data.data.length; i++) {
+            let obj = {
+              num: i+1,
+              cert: res.data.data[i].certificate,
+              name: res.data.data[i].firstname+" "+res.data.data[i].lastname,
+              tel: res.data.data[i].telephone,
+              profile: res.data.data[i].id,
+            };
+            this.setState({
+              ...this.state,
+              datasource: [...this.state.datasource, obj],
+            })
+          } 
+        }
+        this.showModalSuccess();
+      } else {
+        this.showModalAlert();
+      }
+    })
+    .catch(error =>{
+      console.log(error);
+      this.showModalAlert();
+    });
+  };
+
+  showModalSuccess = () => {
+    this.setState({
+      visiblesuccess: true,
+      visiblealert: false,
+      visiblegooglemap: false,
+    });
+  };
+
+  showModalAlert = () => {
+    this.setState({
+      visiblesuccess: false,
+      visiblealert: true,
+      visiblegooglemap: false,
     });
   };
 
   showModalGoogleMap = () => {
     this.setState({
+      visiblesuccess: false,
+      visiblealert: false,
       visiblegooglemap: true,
     });
   };
@@ -92,7 +160,8 @@ class UserPage extends React.Component {
   handleOk = e => {
     console.log(e);
     this.setState({
-      visiblesearch: false,
+      visiblesuccess: false,
+      visiblealert: false,
       visiblegooglemap: false,
     });
   };
@@ -100,7 +169,8 @@ class UserPage extends React.Component {
   handleCancel = e => {
     console.log(e);
     this.setState({
-      visiblesearch: false,
+      visiblesuccess: false,
+      visiblealert: false,
       visiblegooglemap: false,
     });
   };
@@ -118,6 +188,7 @@ class UserPage extends React.Component {
   handleMarkerClick = () => {
     this.setState({ isMarkerShown: false })
     this.delayedShowMarker()
+    console.log(this.props)
   }
 
   render() {
@@ -134,7 +205,11 @@ class UserPage extends React.Component {
                   <Col span={1}></Col>
                   <Col span={12}>
                     <Form.Item>
-                      <Select placeholder="Select..." allowClear>
+                      <Select placeholder="Select.." style={{ width: '100%' }} value={this.state.txtProvince} onChange={(e) => {
+                          this.setState({
+                            txtProvince: e
+                          })
+                        }}>
                         <Option value="กรุงเทพมหานคร">กรุงเทพมหานคร</Option>
                         <Option value="กระบี่">กระบี่</Option>
                         <Option value="กาญจนบุรี">กาญจนบุรี</Option>
@@ -216,10 +291,10 @@ class UserPage extends React.Component {
                     </Form.Item>
                   </Col>
                   <Col span={5}>
-                    <Button type="primary" shape="round" onClick={this.showModalSearch} icon={<SearchOutlined />}>SEARCH</Button>
+                    <Button type="primary" shape="round" onClick={this.handleSubmit} icon={<SearchOutlined />}>SEARCH</Button>
                     <Modal
                       title="SEARCH"
-                      visible={this.state.visiblesearch}
+                      visible={this.state.visiblesuccess}
                       onOk={this.handleOk}
                       onCancel={this.handleCancel}
                       footer={[
@@ -228,6 +303,17 @@ class UserPage extends React.Component {
                       ]}
                     >
                       <p>Search Success...</p>
+                    </Modal>
+                    <Modal
+                      title="Alert"
+                      visible={this.state.visiblealert}
+                      onCancel={this.handleCancel}
+                      footer={[
+                        <Button key="back" hidden>Return</Button>,
+                        <Button key="submit" type="primary" onClick={this.handleCancel} shape="round" size="large" danger>Close</Button>,
+                      ]}
+                    >
+                      <p>Search failed!!!</p>
                     </Modal>
                   </Col>
                 </Row>
@@ -242,7 +328,7 @@ class UserPage extends React.Component {
                       onOk={this.handleOk}
                       onCancel={this.handleCancel}
                       footer={[
-                        <Button key="back" type="primary" shape="round" size="large" onClick={this.handleCancel} danger>Return</Button>,
+                        <Button key="back" type="default" shape="round" size="large" onClick={this.handleCancel} danger>Back</Button>,
                         <Button key="submit" type="primary" onClick={this.handleCancel} shape="round" size="large">OK</Button>,
                       ]}
                     >
@@ -256,7 +342,7 @@ class UserPage extends React.Component {
               </Card>
               <br />
               <Card bordered={false} style={{ width: '100%' }}>
-                <Table columns={columns} dataSource={data} size="middle" />
+                <Table bordered={false} columns={this.state.columns} dataSource={this.state.datasource} size="middle" />
               </Card>
             </Col>
             <Col span={1}></Col>
