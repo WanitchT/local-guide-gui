@@ -30,7 +30,7 @@ class GuideProfile extends React.Component {
         var axios = require('axios');
         var config = {
             method: 'get',
-            url: 'https://fighto-api.topwork.asia/api/guide/'+localStorage.getItem('idUserInLocalStorage'),
+            url: 'https://fighto-api.topwork.asia/api/guide/'+localStorage.getItem('idGuideInLocalStorage'),
             headers: { 
             'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
             'Content-Type': 'application/json',
@@ -93,10 +93,10 @@ class GuideProfile extends React.Component {
             <div className="App">
                 <div className="App-display">
                     <br />
-                    <Card title="GUIDE PROFILE" bordered={false} style={{ width: 500 }}>
+                    <Card title="GUIDE PROFILE" bordered={false} style={{ width: 800 }}>
                         <img src={this.state.imageUrl}/>
                     </Card>
-                    <Card bordered={false} style={{ width: 500 }}>
+                    <Card bordered={false} style={{ width: 800 }}>
                         <div className="site-card-wrapper" style={{ width: '100%' }}>
                             <Row gutter={24}>
                                 <Col span={24}>
@@ -104,25 +104,22 @@ class GuideProfile extends React.Component {
                                     <br />
                                     <Descriptions bordered
                                         column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}>
-                                        <Descriptions.Item label="Guide name"></Descriptions.Item>
-                                        <Descriptions.Item label="Guide nickname"></Descriptions.Item>
-                                        <Descriptions.Item label="Age">30</Descriptions.Item>
-                                        <Descriptions.Item label="Phone no."></Descriptions.Item>
-                                        <Descriptions.Item label="Certificate no.">    </Descriptions.Item>
-                                        <Descriptions.Item label="Exp">6 years</Descriptions.Item>
-                                        <Descriptions.Item label="Location">CM</Descriptions.Item>
-                                        <Descriptions.Item label="Plans">
-                                            <Link to="/plandetail">Night market</Link>
-                                            <p>Eating trip</p>
-                                        </Descriptions.Item>
+                                        <Descriptions.Item label="Guide name"><p>{this.state.txtFirstName+" "+this.state.txtLastName}</p></Descriptions.Item>
+                                        <Descriptions.Item label="Guide nickname"><p>{this.state.txtDisplayname}</p></Descriptions.Item>
+                                        <Descriptions.Item label="Gender"><p>{this.state.txtGender}</p></Descriptions.Item>
+                                        <Descriptions.Item label="Education"><p>{this.state.txtEducation}</p></Descriptions.Item>
+                                        <Descriptions.Item label="Certificate no."><p>{this.state.txtCertificate}</p></Descriptions.Item>
+                                        <Descriptions.Item label="Location"><p>{this.state.txtProvince}</p></Descriptions.Item>
+                                        <Descriptions.Item label="Telephone"><p>{this.state.txtTelephone}</p></Descriptions.Item>
+                                        <Descriptions.Item label="Plans"><p>ท่องเที่ยวกลางวันบริเวณสนามหลวง</p></Descriptions.Item>
                                     </Descriptions>
                                 </Col>
                             </Row>
                         </div>
                         <br />
                         <div>
-                            <Button shape="round" size="large" danger><Link to="/userPage">BACK</Link></Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <Button shape="round" size="large" danger><Link to="/review">REVIEW</Link></Button>
+                            <Button type="default" shape="round" size="large" danger><Link to="/userPage">BACK</Link></Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <Button type="primary" shape="round" size="large"><Link to="/review">REVIEW</Link></Button>
                         </div>
                     </Card>
                     <br />
