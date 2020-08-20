@@ -1,8 +1,8 @@
 import React from 'react';
 import '../App.css';
-import { Button, Input, Row, Col, Layout, Menu, Card } from 'antd';
+import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class Display extends React.Component {
   constructor(props) {

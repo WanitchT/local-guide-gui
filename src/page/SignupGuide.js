@@ -1,9 +1,9 @@
 import React from 'react';
 import '../App.css';
-import { Modal, Button, Input, Row, Col, Layout, Menu, Select, Upload, message, Card } from 'antd';
+import { Modal, Button, Input, Row, Col, Select, Upload, message, Card } from 'antd';
 import 'antd/dist/antd.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { LoadingOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import { Link } from "react-router-dom";
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -81,7 +81,7 @@ class SignupGuide extends React.Component {
             txtCertificate: res.data.data.certificate,
             txtLocation: res.data.data.location,
             imageUrl: res.data.data.profilepicture,
-          })
+          });
         }
     })
     .catch(error =>{
@@ -166,7 +166,7 @@ class SignupGuide extends React.Component {
   };
 
   handleChange = info => {
-    
+    console.log(info)
     if (info.file.status === 'uploading') {
       this.setState({ loading: true });
       return;

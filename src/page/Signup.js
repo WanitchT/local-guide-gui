@@ -1,8 +1,8 @@
 import React from 'react';
 import '../App.css';
-import { Modal, Button, Input, Row, Col, Layout, Menu, Card, Form } from 'antd';
+import { Modal, Button, Input, Row, Col, Card} from 'antd';
 import 'antd/dist/antd.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class Signup extends React.Component {
   constructor(props) {

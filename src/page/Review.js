@@ -1,119 +1,174 @@
 import React from 'react';
 import '../App.css';
-import {
-    Modal, Button, Input, Row, Col, Layout, Menu, Card, Descriptions, Badge, Form
-    , Comment, Tooltip, Avatar,Rate
-} from 'antd';
-import moment from 'moment';
+import { Modal, Button, Input, Row, Col, Card, Comment, Avatar, Form, List } from 'antd';
 import 'antd/dist/antd.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import moment from 'moment';
 
-class Review extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            logo: "./display.svg",
-            display: "./display.jpg",
-            txtUserID: "",
-            txtUserPassword: "",
-            txtFirstName: "",
-            txtLastName: "",
-            txtEmail: ""
+const { TextArea } = Input;
+
+const CommentList = ({ comments }) => (
+  <List
+    dataSource={comments}
+    //header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
+    itemLayout="horizontal"
+    renderItem={props => <Comment {...props} />}
+  />
+);
+
+const Editor = ({ onChange, onSubmit, submitting, value }) => (
+  <>
+    <Form.Item>
+      <TextArea rows={4} onChange={onChange} value={value} />
+    </Form.Item>
+    <Form.Item>
+      <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">Add Comment</Button>
+    </Form.Item>
+  </>
+);
+
+class Signup extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      logo: "./display.svg",
+      display: "./display.jpg",
+      txtEmail: "",
+      txtFirstName: "",
+      txtLastName: "",
+      txtDisplayname: "",
+      txtGender: "",
+      txtAddress: "",
+      txtProvince: "",
+      txtTelephone: "",
+      txtEducation: "",
+      txtCertificate: "",
+      txtLocation: "",
+      imageUrl: "",
+      comments: [],
+      submitting: false,
+      value: '',
+    }
+  }
+
+  componentDidMount() {
+    var axios = require('axios');
+    var config = {
+        method: 'get',
+        url: 'https://fighto-api.topwork.asia/api/guide/'+localStorage.getItem('idGuideInLocalStorage'),
+        headers: { 
+        'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With'
+        },
+        reponseType: { 
+        'Content-Type': 'application/json'
         }
+    };
+    
+    axios(config)
+    .then(res => {
+        console.log(JSON.stringify(res.data));
+        if (res.data.success == true) {
+            this.setState({
+                ...this.state,
+                txtFirstName: res.data.data.firstname,
+                txtLastName: res.data.data.lastname,
+                txtDisplayname: res.data.data.displayname,
+                txtGender:  res.data.data.gender,
+                txtAddress: res.data.data.address[0],
+                txtProvince: res.data.data.address[1],
+                txtTelephone: res.data.data.telephone,
+                txtEducation: res.data.data.education,
+                txtCertificate: res.data.data.certificate,
+                txtLocation: res.data.data.location,
+                imageUrl: res.data.data.profilepicture,
+            })        
+        }
+    })
+    .catch(error =>{
+        console.log(error);
+    });
+  }
+
+  handleSubmit = () => {
+    if (!this.state.value) {
+      return;
     }
 
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
-    };
+    this.setState({
+      submitting: true,
+    });
 
-    handleOk = e => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
-    };
+    setTimeout(() => {
+      this.setState({
+        submitting: false,
+        value: '',
+        comments: [
+          {
+            author: <p>{this.state.txtDisplayname}</p>,
+            avatar: this.state.imageUrl,
+            content: <p>{this.state.value}</p>,
+            datetime: moment().fromNow(),
+          },
+          ...this.state.comments,
+        ],
+      });
+    }, 1000);
+  };
 
-    handleCancel = e => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
-    };
+  handleChange = e => {
+    this.setState({
+      value: e.target.value,
+    });
+  };
 
-    render() {
-
-        return (
-            <div className="App">
-                <div className="App-display">
-                    <br />
-                    <p>Review</p>
-                    <br />
-
-                    <div className="site-card-wrapper" style={{ width: '100%' }}>
-                        <Row gutter={16}>
-                            <Col span={2}/>
-                            <Col span={10} className="gutter-row" >
-                                <Card bordered={false} style={{padding: '8px 0'}}>
-                                    <br />
-                                    <Comment
-                                        author={<a>Han Solo</a>}
-                                        avatar={
-                                            <Avatar
-                                                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                                                alt="Han Solo"
-                                            />
-                                        }
-                                        content={
-                                         <Descriptions style={{textAlign:"left"}} 
-                                          column={{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 2 }}>
-                                        <Descriptions.Item label="Guide" >Very kind</Descriptions.Item>
-                                        <Descriptions.Item label="Place">So nice and grate weather</Descriptions.Item>
-                                        <Descriptions.Item label="Location">Too much people</Descriptions.Item>
-                                        <Descriptions.Item label="Others">Food is so delicious</Descriptions.Item>
-                                        <Descriptions.Item label="Rate"><Rate disabled defaultValue={5} /></Descriptions.Item>
-                                        </Descriptions>
-                                        }
-                                        datetime={
-                                            <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-                                                <span>{moment().fromNow()}</span>
-                                            </Tooltip>
-                                        }
-                                    />
-
-
-                                </Card>
-                            </Col>
-                            <Col span={10}>
-
-                                <Card bordered={false} >
-                                    <br />
-
-                                    <Descriptions bordered
-                                        column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}>
-                                        <Descriptions.Item label="Guide"><Input.TextArea /></Descriptions.Item>
-                                        <Descriptions.Item label="Place"><Input.TextArea /></Descriptions.Item>
-                                        <Descriptions.Item label="Location"><Input.TextArea /></Descriptions.Item>
-                                        <Descriptions.Item label="Others"><Input.TextArea /></Descriptions.Item>
-                                        <Descriptions.Item label="Rate"><Rate /></Descriptions.Item>
-                                    </Descriptions>
-
-                                </Card>
-                            </Col>
-                            <Col span={2}></Col>
-                        </Row>
-                    </div>
-                    <br />
-                    <div>
-                        <Button shape="round" size="large"><Link to="/guideprofile">BACK</Link></Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <Button shape="round" size="large" type="primary"><Link to="/userPage">SUBMIT</Link></Button>
-
-                    </div>
-                </div>
-            </div>
-        )
-    }
+  render() {
+    const { comments, submitting, value } = this.state;
+    return (
+      <div className="App">
+        <div className="App-display-review">
+          <br />
+          <Row style={{ width: "100%" }}>
+            <Col span={4}></Col>
+            <Col span={16}>
+              <Card title="REVIEW" bordered={true} style={{ width: "100%" }}>
+                <Row>
+                  <Col span={1}></Col>
+                  <Col span={22} style={{ textAlign: "left" }}>
+                    <Card bordered={false} style={{ width: "100%" }}>
+                      {comments.length > 0 && <CommentList comments={comments} />}
+                      <Comment
+                        avatar={
+                          <Avatar
+                            src={this.state.imageUrl}
+                            alt={this.state.txtDisplayname}
+                          />
+                        }
+                        content={
+                          <Editor
+                            onChange={this.handleChange}
+                            onSubmit={this.handleSubmit}
+                            submitting={submitting}
+                            value={value}
+                          />
+                        }
+                      />
+                    </Card>
+                    <Button type="default" shape="round"><Link to="/guideProfile">BACK</Link></Button>
+                  </Col>
+                  <Col span={1}></Col>
+                </Row>
+              </Card>
+            </Col>
+            <Col span={4}></Col>
+          </Row>
+        </div>
+      </div>
+    )
+  }
 }
 
-export default Review;
+export default Signup;

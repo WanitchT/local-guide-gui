@@ -1,10 +1,9 @@
 import React from 'react';
 import '../App.css';
-import { Modal, Button, Input, Row, Col, Layout, Menu, Card, Select, Form, Table, AutoComplete, InputNumber } from 'antd';
+import { Modal, Button, Row, Col, Card, Select, Form, Table } from 'antd';
 import 'antd/dist/antd.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SearchOutlined, ProfileOutlined } from '@ant-design/icons';
-import GuideProfile from './GuideProfile';
 import { compose, withProps } from "recompose"
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 

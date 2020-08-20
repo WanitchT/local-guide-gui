@@ -1,10 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import '../App.css';
-import { Modal, Button, Input, Row, Col, Layout, Menu } from 'antd';
+import { Modal, Button, Input } from 'antd';
 import 'antd/dist/antd.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { convertLegacyProps } from 'antd/lib/button/button';
+import { Link } from "react-router-dom";
 
 class Login extends React.Component {
   constructor(props) {

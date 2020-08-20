@@ -1,14 +1,15 @@
 import React from 'react';
 import '../App.css';
-import { Modal, Button, Input, Row, Col, Layout, Menu, Card, Descriptions, Badge, Rate } from 'antd';
+import { Modal, Button, Row, Col, Card, Descriptions, Rate } from 'antd';
 import 'antd/dist/antd.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { ProfileOutlined } from '@ant-design/icons';
 
 class GuideProfile extends React.Component {
-    constructor(props) {
+    constructor(props) {  
         super(props)
         this.state = {
-            logo: "./display.svg",
+            logo: "./display.svg",  
             display: "./display.jpg",
             loading: false,
             txtEmail: "",
@@ -24,7 +25,7 @@ class GuideProfile extends React.Component {
             txtLocation: "",
             imageUrl: ""
         }
-    }
+    }  
 
     componentDidMount() {
         var axios = require('axios');
@@ -94,7 +95,7 @@ class GuideProfile extends React.Component {
                 <div className="App-display">
                     <br />
                     <Card title="GUIDE PROFILE" bordered={false} style={{ width: 800 }}>
-                        <img src={this.state.imageUrl}/>
+                        <img src={this.state.imageUrl} style={{ width: 200 }}/>
                     </Card>
                     <Card bordered={false} style={{ width: 800 }}>
                         <div className="site-card-wrapper" style={{ width: '100%' }}>
@@ -111,8 +112,40 @@ class GuideProfile extends React.Component {
                                         <Descriptions.Item label="Certificate no."><p>{this.state.txtCertificate}</p></Descriptions.Item>
                                         <Descriptions.Item label="Location"><p>{this.state.txtProvince}</p></Descriptions.Item>
                                         <Descriptions.Item label="Telephone"><p>{this.state.txtTelephone}</p></Descriptions.Item>
-                                        <Descriptions.Item label="Plans"><p>ท่องเที่ยวกลางวันบริเวณสนามหลวง</p></Descriptions.Item>
+                                        <Descriptions.Item label="Plans"><Button type="primary" shape="circle" icon={<ProfileOutlined />} onClick={this.showModal} ghost ></Button></Descriptions.Item>
                                     </Descriptions>
+                                    <Modal
+                                        title="Plans"
+                                        visible={this.state.visible}
+                                        onCancel={this.handleCancel}
+                                        footer={[
+                                            <Button key="back" hidden>Return</Button>,
+                                            <Button key="submit" type="primary" onClick={this.handleCancel} shape="round" size="large" danger>Close</Button>,
+                                        ]}
+                                        >
+                                        <div className="site-card-wrapper" style={{ width: '100%' }}>
+                                            <Row>
+                                                <Col span={24}>
+                                                    <Card title="Schedule" bordered={false} style={{ width: '100%' }}>
+                                                        <Descriptions bordered
+                                                            column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}>
+                                                            <Descriptions.Item label="8:00 น.">เริ่มออกเดินทาง</Descriptions.Item>
+                                                            <Descriptions.Item label="9:00 น.">วัดพระเชตุพนวิมลมังคลารามราชวรมหาวิหาร</Descriptions.Item>
+                                                            <Descriptions.Item label="10:00 น.">วัดอรุณราชวรารามราชวรมหาวิหาร</Descriptions.Item>
+                                                            <Descriptions.Item label="11:00 น.">วัดบวรนิเวศราชวรวิหาร</Descriptions.Item>
+                                                            <Descriptions.Item label="12:00 น.">ทานอาหารกลางวัน</Descriptions.Item>
+                                                            <Descriptions.Item label="13:00 น.">วัดมหาธาตุยุวราชรังสฤษฎิ์ราชวรมหาวิหาร</Descriptions.Item>
+                                                            <Descriptions.Item label="14:00 น.">วัดราชบพิธสถิตมหาสีมารามราชวรวิหาร</Descriptions.Item>
+                                                            <Descriptions.Item label="15:00 น.">วัดสุทัศนเทพวรารามราชวรมหาวิหาร</Descriptions.Item>
+                                                            <Descriptions.Item label="16:00 น.">วัดราชประดิษฐสถิตมหาสีมารามราชวรวิหาร</Descriptions.Item>
+                                                            <Descriptions.Item label="17:00 น.">วัดเบญจมบพิตรดุสิตวนารามราชวรวิหาร</Descriptions.Item>
+                                                            <Descriptions.Item label="18:00 น.">วัดสระเกศราชวรมหาวิหาร</Descriptions.Item>
+                                                        </Descriptions>
+                                                    </Card>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </Modal>
                                 </Col>
                             </Row>
                         </div>
