@@ -27,7 +27,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
   </>
 );
 
-class Signup extends React.Component {
+class Review extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -171,4 +171,4 @@ class Signup extends React.Component {
   }
 }
 
-export default Signup;
+export default Review;
