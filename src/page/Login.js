@@ -1,10 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import '../App.css';
-import { Modal, Button, Input, Row, Col, Layout, Menu } from 'antd';
+import { Modal, Button, Input, Card, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { convertLegacyProps } from 'antd/lib/button/button';
+import { Link } from "react-router-dom";
 
 class Login extends React.Component {
   constructor(props) {
@@ -83,51 +82,73 @@ class Login extends React.Component {
         <div className="App-display">
           <img src={this.state.logo} width="500px" alt="Logo" />
           <br />
-          <p>SIGN IN</p>
-          <br />
-          <p>USERNAME</p>
-          <Input style={{ width: '25%', borderRadius: 50 }} value={this.state.txtUsername} onChange={(e) => {
-              this.setState({
-              txtUsername: e.target.value
-              })
-          }}></Input>
-          <br />
-          <p>PASSWORD</p>
-          <Input.Password style={{ width: '25%', borderRadius: 50 }} value={this.state.txtPassword} onChange={(e) => {
-              this.setState({
-                txtPassword: e.target.value
-              })
-          }}></Input.Password>
-          <br />
-          <div>
-            <Button type="primary" shape="round" size="large"><Link to="/singup">SIGNUP</Link></Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button shape="round" size="large" onClick={this.handleSubmit}>Login</Button>
-            <Modal
-              title="SELECT"
-              visible={this.state.visiblesuccess}
-              onCancel={this.handleCancel}
-              footer={[
-                <Button key="back" hidden>Return</Button>,
-                <Button key="submit" type="primary" onClick={this.handleCancel} shape="round" size="large" danger>Close</Button>,
-              ]}
-            >
-              <Button block shape="round" size="large"><Link to="/userPage">USER</Link></Button>
-              <br /><br />
-              <Button block shape="round" size="large"><Link to="/signupGuide">GUIDE</Link></Button>
-            </Modal>
-            <Modal
-              title="Alert"
-              visible={this.state.visiblealert}
-              onCancel={this.handleCancel}
-              footer={[
-                <Button key="back" hidden>Return</Button>,
-                <Button key="submit" type="primary" onClick={this.handleCancel} shape="round" size="large" danger>Close</Button>,
-              ]}
-            >
-              <p>Username or Password incorrect!!!</p>
-            </Modal>
-            <br />
-          </div>
+          <Card title="SIGN IN" bordered={false} style={{ width: 500, borderRadius: 50 }}>
+            <Row>
+              <Col span={1}></Col>
+              <Col span={6} style={{ height: "50px" }}>
+                <Input style={{ width: '100%', borderRadius: 50, backgroundColor: '#282c34', color: 'white', textAlign: 'center', height: "40px" }} value="USERNAME"></Input>
+              </Col>
+              <Col span={1}></Col>
+              <Col span={15}>
+                <Input style={{ borderRadius: 50, height: "40px" }} value={this.state.txtUsername} onChange={(e) => {
+                  this.setState({
+                    txtUsername: e.target.value
+                  })
+                }}></Input>
+              </Col>
+              <Col span={1}></Col>
+            </Row>
+            <Row>
+              <Col span={1}></Col>
+              <Col span={6} style={{ height: "50px" }}>
+                <Input style={{ width: '100%', borderRadius: 50, backgroundColor: '#282c34', color: 'white', textAlign: 'center', height: "40px" }} value="PASSWORD"></Input>
+              </Col>
+              <Col span={1}></Col>
+              <Col span={15}>
+                <Input.Password style={{ borderRadius: 50, height: "40px" }} value={this.state.txtPassword} onChange={(e) => {
+                  this.setState({
+                    txtPassword: e.target.value
+                  })
+                }}></Input.Password>
+              </Col>
+              <Col span={1}></Col>
+            </Row>
+            <Row><Col span={24} style={{ height: "20px" }}></Col></Row>
+            <Row>
+              <Col span={8}></Col>
+              <Col span={6}>
+                <Button type="primary" shape="round" size="large"><Link to="/singup">SIGNUP</Link></Button>
+              </Col>
+              <Col span={6}>
+                <Button shape="round" size="large" onClick={this.handleSubmit}>Login</Button>
+              </Col>
+              <Col span={4}></Col>
+            </Row>
+          </Card>
+          <Modal
+            title="SELECT"
+            visible={this.state.visiblesuccess}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button key="back" hidden>Return</Button>,
+              <Button key="submit" type="primary" onClick={this.handleCancel} shape="round" size="large" danger>Close</Button>,
+            ]}
+          >
+            <Button block shape="round" size="large"><Link to="/userPage">USER</Link></Button>
+            <br /><br />
+            <Button block shape="round" size="large"><Link to="/signupGuide">GUIDE</Link></Button>
+          </Modal>
+          <Modal
+            title="Alert"
+            visible={this.state.visiblealert}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button key="back" hidden>Return</Button>,
+              <Button key="submit" type="primary" onClick={this.handleCancel} shape="round" size="large" danger>Close</Button>,
+            ]}
+          >
+            <p>Username or Password incorrect!!!</p>
+          </Modal>
         </div>
       </div>
     )

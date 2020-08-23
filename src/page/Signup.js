@@ -1,8 +1,8 @@
 import React from 'react';
 import '../App.css';
-import { Modal, Button, Input, Row, Col, Layout, Menu, Card, Form } from 'antd';
+import { Modal, Button, Input, Row, Col, Card} from 'antd';
 import 'antd/dist/antd.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class Signup extends React.Component {
   constructor(props) {
@@ -80,11 +80,11 @@ class Signup extends React.Component {
       <div className="App">
         <div className="App-display">
         <img src={this.state.logo} width="500px" alt="Logo" />
-        <Card title="SIGNUP INFORMATION" bordered={false} style={{ width: 600 }}>
+        <Card title="SIGNUP INFORMATION" bordered={false} style={{ width: 600, borderRadius: 50 }}>
           <Row>
             <Col span={1}></Col>
             <Col span={5} style={{ height: "50px" }}>
-              <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center', height: "40px" }} value="E-MAIL"></Input>
+              <Input style={{ width: '100%', borderRadius: 50, backgroundColor: '#282c34', color: 'white', textAlign: 'center', height: "40px" }} value="E-MAIL"></Input>
             </Col>
             <Col span={1}></Col>
             <Col span={16}>
@@ -99,7 +99,7 @@ class Signup extends React.Component {
           <Row>
             <Col span={1}></Col>
             <Col span={5} style={{ height: "50px" }}>
-              <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center', height: "40px" }} value="PASSWORD"></Input>
+              <Input style={{ width: '100%', borderRadius: 50, backgroundColor: '#282c34', color: 'white', textAlign: 'center', height: "40px" }} value="PASSWORD"></Input>
             </Col>
             <Col span={1}></Col>
             <Col span={16}>
@@ -114,7 +114,7 @@ class Signup extends React.Component {
           <Row>
             <Col span={1}></Col>
             <Col span={5} style={{ height: "50px" }}>
-              <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center', height: "40px" }} value="FIRST NAME"></Input>
+              <Input style={{ width: '100%', borderRadius: 50, backgroundColor: '#282c34', color: 'white', textAlign: 'center', height: "40px" }} value="FIRST NAME"></Input>
             </Col>
             <Col span={1}></Col>
             <Col span={16}>
@@ -129,7 +129,7 @@ class Signup extends React.Component {
           <Row>
             <Col span={1}></Col>
             <Col span={5} style={{ height: "50px" }}>
-              <Input style={{ width: '100%', borderRadius: 50, textAlign: 'center', height: "40px" }} value="LAST NAME"></Input>
+              <Input style={{ width: '100%', borderRadius: 50, backgroundColor: '#282c34', color: 'white', textAlign: 'center', height: "40px" }} value="LAST NAME"></Input>
             </Col>
             <Col span={1}></Col>
             <Col span={16}>
