@@ -1,19 +1,22 @@
 import React from 'react';
 import '../App.css';
-import { Modal, Button, Input, Row, Col, Card, Comment, Avatar, Form, List } from 'antd';
+import { Modal, Button, Input, Row, Col, Card, Comment, Avatar, Form, List, Divider } from 'antd';
 import 'antd/dist/antd.css';
 import { Link } from "react-router-dom";
 import moment from 'moment';
+import { blue, red } from '@ant-design/colors';
 
 const { TextArea } = Input;
 
 const CommentList = ({ comments }) => (
-  <List
-    dataSource={comments}
-    //header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
-    itemLayout="horizontal"
-    renderItem={props => <Comment {...props} />}
-  />
+  <>
+    <List
+      dataSource={comments}
+      //header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
+      itemLayout="horizontal"
+      renderItem={props => <><Comment {...props} /> <Divider /></>}
+    />
+  </>
 );
 
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
@@ -22,7 +25,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
       <TextArea rows={4} onChange={onChange} value={value} />
     </Form.Item>
     <Form.Item>
-      <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">Add Comment</Button>
+      <Button htmlType="submit" type="primary" shape="round" loading={submitting} onClick={onSubmit}>Add Comment</Button>
     </Form.Item>
   </>
 );
@@ -108,10 +111,10 @@ class Review extends React.Component {
         value: '',
         comments: [
           {
-            author: <p>{this.state.txtDisplayname}</p>,
             avatar: this.state.imageUrl,
-            content: <p>{this.state.value}</p>,
+            author: <span style={{ color: blue[6] }}>{this.state.txtDisplayname}</span>,
             datetime: moment().fromNow(),
+            content: <p>{this.state.value}</p>,
           },
           ...this.state.comments,
         ],
@@ -134,7 +137,7 @@ class Review extends React.Component {
           <Row style={{ width: "100%" }}>
             <Col span={4}></Col>
             <Col span={16}>
-              <Card title="REVIEW" bordered={true} style={{ width: "100%" }}>
+              <Card title="REVIEW" bordered={true} style={{ width: "100%", borderRadius: 50 }}>
                 <Row>
                   <Col span={1}></Col>
                   <Col span={22} style={{ textAlign: "left" }}>

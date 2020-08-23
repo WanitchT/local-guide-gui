@@ -143,7 +143,7 @@ class GuideProfile extends React.Component {
         <div className="App-display">
           <br />
           <Card title="GUIDE PROFILE" bordered={false} style={{ width: 800 }}>
-            <img src={this.state.imageUrl} style={{ width: 200 }}/>
+            <img src={this.state.imageUrl} style={{ width: 200, borderRadius: 50 }}/>
           </Card>
           <Card bordered={false} style={{ width: 800 }}>
             <div className="site-card-wrapper" style={{ width: '100%' }}>
