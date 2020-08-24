@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import { Modal, Button, Input, Row, Col, Card, Comment, Avatar, Form, List, Divider } from 'antd';
+import { Button, Input, Row, Col, Card, Comment, Avatar, Form, List, Divider } from 'antd';
 import 'antd/dist/antd.css';
 import { Link } from "react-router-dom";
 import moment from 'moment';
@@ -36,17 +36,7 @@ class Review extends React.Component {
     this.state = {
       logo: "./display.svg",
       display: "./display.jpg",
-      txtEmail: "",
       txtFirstName: "",
-      txtLastName: "",
-      txtDisplayname: "",
-      txtGender: "",
-      txtAddress: "",
-      txtProvince: "",
-      txtTelephone: "",
-      txtEducation: "",
-      txtCertificate: "",
-      txtLocation: "",
       imageUrl: "",
       comments: [],
       submitting: false,
@@ -58,7 +48,7 @@ class Review extends React.Component {
     var axios = require('axios');
     var config = {
         method: 'get',
-        url: 'https://fighto-api.topwork.asia/api/guide/'+localStorage.getItem('idGuideInLocalStorage'),
+        url: 'https://fighto-api.topwork.asia/api/guide/'+localStorage.getItem('idUserInLocalStorage'),
         headers: { 
         'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
         'Content-Type': 'application/json',
@@ -78,15 +68,6 @@ class Review extends React.Component {
             this.setState({
                 ...this.state,
                 txtFirstName: res.data.data.firstname,
-                txtLastName: res.data.data.lastname,
-                txtDisplayname: res.data.data.displayname,
-                txtGender:  res.data.data.gender,
-                txtAddress: res.data.data.address[0],
-                txtProvince: res.data.data.address[1],
-                txtTelephone: res.data.data.telephone,
-                txtEducation: res.data.data.education,
-                txtCertificate: res.data.data.certificate,
-                txtLocation: res.data.data.location,
                 imageUrl: res.data.data.profilepicture,
             })        
         }
@@ -112,7 +93,7 @@ class Review extends React.Component {
         comments: [
           {
             avatar: this.state.imageUrl,
-            author: <span style={{ color: blue[6] }}>{this.state.txtDisplayname}</span>,
+            author: <span style={{ color: blue[6] }}>{this.state.txtFirstName}</span>,
             datetime: moment().fromNow(),
             content: <p>{this.state.value}</p>,
           },
@@ -120,6 +101,47 @@ class Review extends React.Component {
         ],
       });
     }, 1000);
+
+    var axios = require('axios');
+    var data = JSON.stringify(
+      {
+        "comments": [
+          {
+            "avatar": this.state.imageUrl,
+            "author": this.state.txtFirstName,
+            "datetime": moment().fromNow(),
+            "content": this.state.value,
+          },
+        ],
+      }
+    );
+    console.log(data)
+
+    var config = {
+      method: 'put',
+      url: 'https://fighto-api.topwork.asia/api/comment/'+localStorage.getItem('idGuideInLocalStorage'),
+      headers: { 
+        'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With'
+      },
+      data : data,
+      reponseType: { 
+        'Content-Type': 'application/json'
+      }
+    };
+    console.log(config.url)
+    console.log(config.headers)
+    
+    axios(config)
+    .then(res => {
+      console.log(JSON.stringify(res.data));
+    })
+    .catch(error =>{
+      console.log(error);
+    });
   };
 
   handleChange = e => {
@@ -147,7 +169,7 @@ class Review extends React.Component {
                         avatar={
                           <Avatar
                             src={this.state.imageUrl}
-                            alt={this.state.txtDisplayname}
+                            alt={this.state.txtFirstName}
                           />
                         }
                         content={
