@@ -41,7 +41,7 @@ class Review extends React.Component {
       imageUrl: "",
       comments: [],
       submitting: false,
-      value: '',
+      value: "",
     }
   }
 
@@ -82,7 +82,25 @@ class Review extends React.Component {
           })
         }
       }
-      console.log(this.state.imageUrl)
+      this.setState({
+        submitting: false,
+        value: '',
+        comments: [
+          {
+            avatar: <Avatar style={{ backgroundColor: '#282c34', color: 'white' }}>{this.state.txtEmail.substring(0, 1)}</Avatar>,
+            author: <span style={{ color: blue[6] }}>{this.state.txtFirstName}</span>,
+            datetime: moment().fromNow(),
+            content: "Hello",
+          },
+          {
+            avatar: <Avatar style={{ backgroundColor: '#282c34', color: 'white' }}>{this.state.txtEmail.substring(0, 1)}</Avatar>,
+            author: <span style={{ color: blue[6] }}>{this.state.txtFirstName}</span>,
+            datetime: moment().fromNow(),
+            content: "Sawatdee",
+          },
+          ...this.state.comments,
+        ],
+      });
     })
     .catch(error =>{
         console.log(error);
@@ -128,30 +146,25 @@ class Review extends React.Component {
           ],
         });
       }
-
     }, 1000);
 
     var axios = require('axios');
     var data = JSON.stringify(
       {
-        "comments": [
-          {
-            "guideid": localStorage.getItem('idGuideInLocalStorage'),
-            "useridcomment": localStorage.getItem('idUserInLocalStorage'),
-            "useremail": this.state.txtEmail,
-            "avatar": this.state.imageUrl,
-            "author": this.state.txtFirstName,
-            "datetime": moment().fromNow(),
-            "content": this.state.value,
-          },
-        ],
+        "guideid": localStorage.getItem('idGuideInLocalStorage'),
+        "useridcomment": localStorage.getItem('idUserInLocalStorage'),
+        "useremail": this.state.txtEmail,
+        "avatar": this.state.imageUrl,
+        "author": this.state.txtFirstName,
+        "datecomment": moment().fromNow(),
+        "message": this.state.value,
       }
     );
     console.log(data)
 
     var config = {
-      method: 'put',
-      url: 'https://fighto-api.topwork.asia/api/comment/'+localStorage.getItem('idGuideInLocalStorage'),
+      method: 'post',
+      url: 'https://fighto-api.topwork.asia/api/comment/',
       headers: { 
         'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
         'Content-Type': 'application/json',
