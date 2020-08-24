@@ -36,6 +36,7 @@ class Review extends React.Component {
     this.state = {
       logo: "./display.svg",
       display: "./display.jpg",
+      txtEmail: "",
       txtFirstName: "",
       imageUrl: "",
       comments: [],
@@ -63,14 +64,25 @@ class Review extends React.Component {
     
     axios(config)
     .then(res => {
-        console.log(JSON.stringify(res.data));
-        if (res.data.success == true) {
-            this.setState({
-                ...this.state,
-                txtFirstName: res.data.data.firstname,
-                imageUrl: res.data.data.profilepicture,
-            })        
+      console.log(JSON.stringify(res.data));
+      if (res.data.success == true) {
+        if (res.data.data.profilepicture == undefined) {
+          this.setState({
+            ...this.state,
+            txtEmail: res.data.data.email,
+            txtFirstName: res.data.data.firstname,
+            imageUrl: <Avatar style={{ backgroundColor: '#282c34', color: 'white' }}>{res.data.data.email.substring(0, 1)}</Avatar>,
+          })
+        } else {
+          this.setState({
+            ...this.state,
+            txtEmail: res.data.data.email,
+            txtFirstName: res.data.data.firstname,
+            imageUrl: res.data.data.profilepicture,
+          })
         }
+      }
+      console.log(this.state.imageUrl)
     })
     .catch(error =>{
         console.log(error);
@@ -87,19 +99,36 @@ class Review extends React.Component {
     });
 
     setTimeout(() => {
-      this.setState({
-        submitting: false,
-        value: '',
-        comments: [
-          {
-            avatar: this.state.imageUrl,
-            author: <span style={{ color: blue[6] }}>{this.state.txtFirstName}</span>,
-            datetime: moment().fromNow(),
-            content: <p>{this.state.value}</p>,
-          },
-          ...this.state.comments,
-        ],
-      });
+      if (this.state.imageUrl == undefined) {
+        this.setState({
+          submitting: false,
+          value: '',
+          comments: [
+            {
+              avatar: <Avatar style={{ backgroundColor: '#282c34', color: 'white' }}>{this.state.txtEmail.substring(0, 1)}</Avatar>,
+              author: <span style={{ color: blue[6] }}>{this.state.txtFirstName}</span>,
+              datetime: moment().fromNow(),
+              content: <p>{this.state.value}</p>,
+            },
+            ...this.state.comments,
+          ],
+        });
+      } else {
+        this.setState({
+          submitting: false,
+          value: '',
+          comments: [
+            {
+              avatar: this.state.imageUrl,
+              author: <span style={{ color: blue[6] }}>{this.state.txtFirstName}</span>,
+              datetime: moment().fromNow(),
+              content: <p>{this.state.value}</p>,
+            },
+            ...this.state.comments,
+          ],
+        });
+      }
+
     }, 1000);
 
     var axios = require('axios');
@@ -107,6 +136,9 @@ class Review extends React.Component {
       {
         "comments": [
           {
+            "guideid": localStorage.getItem('idGuideInLocalStorage'),
+            "useridcomment": localStorage.getItem('idUserInLocalStorage'),
+            "useremail": this.state.txtEmail,
             "avatar": this.state.imageUrl,
             "author": this.state.txtFirstName,
             "datetime": moment().fromNow(),
@@ -166,12 +198,7 @@ class Review extends React.Component {
                     <Card bordered={false} style={{ width: "100%" }}>
                       {comments.length > 0 && <CommentList comments={comments} />}
                       <Comment
-                        avatar={
-                          <Avatar
-                            src={this.state.imageUrl}
-                            alt={this.state.txtFirstName}
-                          />
-                        }
+                        avatar={this.state.imageUrl}
                         content={
                           <Editor
                             onChange={this.handleChange}
