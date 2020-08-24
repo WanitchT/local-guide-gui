@@ -11,8 +11,8 @@ class Login extends React.Component {
     this.state = {
       logo: "./display.svg",
       display: "./display.jpg",
-      txtUsername: "Tony@baac.or.th",
-      txtPassword: "12345678"
+      txtUsername: "",
+      txtPassword: ""
     }
   }
 

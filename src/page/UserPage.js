@@ -34,7 +34,7 @@ class UserPage extends React.Component {
       logo: "./display.svg",
       display: "./display.jpg",
       txtProvince: "",
-      txtLocation: "",
+      txtLocation: "กรุงเทพมหานคร",
       isMarkerShown: false,
       columns: [
         {
@@ -155,36 +155,6 @@ class UserPage extends React.Component {
       visiblealert: false,
       visiblegooglemap: true,
     });
-
-    var axios = require('axios');
-    var config = {
-      method: 'get',
-      url: 'https://fighto-api.topwork.asia/api/guide/'+localStorage.getItem('idUserInLocalStorage'),
-      headers: { 
-      'Authorization': 'Bearer '+localStorage.getItem('idTokenInLocalStorage'), 
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With'
-      },
-      reponseType: { 
-      'Content-Type': 'application/json'
-      }
-    };
-    
-    axios(config)
-    .then(res => {
-      console.log(JSON.stringify(res.data));
-      if (res.data.success == true) {
-        this.setState({
-          ...this.state,
-          txtLocation: res.data.data.location[0],
-        });
-      }
-    })
-    .catch(error =>{
-        console.log(error);
-    });
   };
 
   handleGoogleMapOk = e => {
@@ -194,7 +164,7 @@ class UserPage extends React.Component {
       visiblealert: false,
       visiblegooglemap: false,
     });
-
+    
     var axios = require('axios');
     var data = JSON.stringify({ "address": this.state.txtLocation });
     console.log(data)
