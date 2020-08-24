@@ -372,13 +372,13 @@ class SignupGuide extends React.Component {
           <Row style={{ width: '100%' }}>
             <Col span={1}></Col>
             <Col span={22}>
-              <Card title="PROFILE GUIDE" bordered={true} style={{ width: '100%' }}>
+              <Card title="PROFILE GUIDE" bordered={true} style={{ width: '100%', borderRadius: 50 }}>
               <Row>
                 <Col span={10} style={{ align: "center" }}>
                   <Row>
                     <Col span={23}>
-                      <Card title="PICTURE" bordered={true} style={{ width: '100%' }}>
-                        <img src={this.state.imageUrl} alt="avatar" style={{ width: '100%' }} />
+                      <Card title="PICTURE" bordered={true} style={{ width: '100%', borderRadius: 50 }}>
+                        <img src={this.state.imageUrl} alt="avatar" style={{ width: '100%', borderRadius: 50 }} />
                       </Card>
                     </Col>
                     <Col span={1}></Col>
@@ -403,7 +403,7 @@ class SignupGuide extends React.Component {
                   </Row>
                 </Col>
                 <Col span={14} style={{ align: "center" }}>
-                  <Card title="INFORMATION" bordered={true} style={{ width: '100%' }}>
+                  <Card title="INFORMATION" bordered={true} style={{ width: '100%', borderRadius: 50 }}>
                     <Row>
                       <Col span={5} style={{ height: "40px" }}>
                         <Input style={{ width: '100%', borderRadius: 50, backgroundColor: '#282c34', color: 'white', textAlign: 'center' }} value="E-MAIL"></Input>
